@@ -18,7 +18,7 @@ var connection = mysql.createPool({
 
 // set up some configs for express.
 const config = {
-  name: 'sampledockercompose',
+  name: 'thursdayteam2',
   port: 8000,
   host: '0.0.0.0',
 };
@@ -38,6 +38,13 @@ app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
 //include routes
 routes(app, logger);
+
+app.get('/health', (request, response, next) => {
+    const port = config.port;
+    const responseBody = { status: 'up', port };
+    response.json(responseBody);
+    next();
+});
 
 // connecting the express object to listen on a particular port as defined in the config object.
 app.listen(config.port, config.host, (e) => {
