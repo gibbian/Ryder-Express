@@ -199,7 +199,7 @@ module.exports = function routes(app, logger) {
     }
   });
 
-  // GET /employee
+  // GET /employees
   app.get('/employee', (req, res) => {
     // obtain a connection from our pool of connections
     pool.getConnection(function (err, connection){
@@ -227,7 +227,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // GET /employee by company
+  // GET /employees by company
   app.get('/employee/:company', (req, res) => {
     // obtain a connection from our pool of connections
     if (!("company" in req.params)){
@@ -251,6 +251,48 @@ module.exports = function routes(app, logger) {
               res.status(400).json({
                 "data": [],
                 "error": "Error obtaining employees"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }   
+  });
+
+  // GET /employee by company and id
+  app.get('/employee/:company/:id', (req, res) => {
+    // obtain a connection from our pool of connections
+    if (!("company" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `company`",
+      });
+    }
+    else if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          // if there is no issue obtaining a connection, execute query and release connection
+          connection.query('SELECT * FROM Employee WHERE company_id = ? AND id = ?', [req.params.company, req.params.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching employee: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining employee"
               })
             } else {
               res.status(200).json({
