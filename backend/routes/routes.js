@@ -66,6 +66,7 @@ module.exports = function routes(app, logger) {
       });
     }
   });
+
   // GET /dates by whether or not they can be scheduled on a particular day
   app.get('/dates/:company/:available', (req, res) => {
     if (!("company" in req.params)){
@@ -140,6 +141,52 @@ module.exports = function routes(app, logger) {
               res.status(400).json({
                 "data": [],
                 "error": "Error obtaining dates"
+              })
+            } else {
+              console.log(rows);
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+// GET /dates by company
+  app.post('/dates/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("is_available" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `is_available`",
+      });
+    }
+    else if (!("is_scheduled" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `is_scheduled`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query('UPDATE Dates SET is_available = ? AND is_scheduled = ? WHERE id = ?', [req.body.is_available, req.body.is_scheduled, req.params.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while updating dates: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error updating dates"
               })
             } else {
               res.status(200).json({
