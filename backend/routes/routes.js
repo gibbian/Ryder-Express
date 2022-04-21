@@ -154,8 +154,8 @@ module.exports = function routes(app, logger) {
     }
   });
 
-// GET /dates by company
-  app.post('/dates/:id', (req, res) => {
+// PUT /dates/:id Update a date at a particular id
+  app.put('/dates/:id', (req, res) => {
     if (!("id" in req.params)){
       res.status(400).send({
         success: false,
