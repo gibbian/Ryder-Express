@@ -67,7 +67,48 @@ module.exports = function routes(app, logger) {
         }
       });
     }
-    
+  });
+  // GET /dates by whether or not they can be scheduled on a particular day
+  app.get('/dates/:company/:available', (req, res) => {
+    if (!("company" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `company`",
+      });
+    }
+    else if (!("available" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `available`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          isAvailable = false;
+          if (req.params.available == "true"){
+            isAvailable = true;
+          }
+          connection.query('SELECT * FROM Dates WHERE company_id = ? AND is_available = ?', [req.params.company, isAvailable], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching dates: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining dates"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
   });
 
   // GET /employee
