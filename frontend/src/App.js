@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import axios from 'axios';
-import {Home} from './components/Home'
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+
+
+import {Home} from './components/Home';
+import {Navbar} from './components/Navbar/Navbar';
+import {ProductPage} from './components/ProductPage';
+import {Profile} from './components/Profile';
 
 // React functional component
 function App () {
@@ -70,11 +76,16 @@ function App () {
   }, [])
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <Home/>
-      </header>
-    </div>
+      <div className="App">
+        <Navbar/>
+        <div className='content'>
+          <Routes>
+            <Route exact path="/" element={<Home/>}/>
+            <Route exact path="/ProductPage" element={<ProductPage/>}/>
+            <Route exact path="/Profile" element={<Profile/>}/>
+          </Routes>
+        </div>
+      </div>      
   );
 }
 
