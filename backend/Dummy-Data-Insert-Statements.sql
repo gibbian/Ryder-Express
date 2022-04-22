@@ -28,8 +28,8 @@ VALUES
 (TRUE, FALSE, CURRENT_DATE + 3, 3),
 (TRUE, FALSE, CURRENT_DATE + 4, 3);
 
-INSERT INTO Delivery (destination, origin_loc, product_name, product_desc, product_picture, delivered_picture, is_delivered, flagged_for_return, is_return, date_received, buyer_id, seller_id, employee_id)
-VALUES('2721 Black Sage Dr.', 'Northeast', 'Uranium 2', 'This is also used for a nuclear reactor', 'https://imgur.com/cFm57rl', '', false, false, false, CURRENT_DATE, 1, 1, 61);
+INSERT INTO Delivery (destination, origin_loc, product_name, product_desc, product_picture, delivered_picture, left_warehouse, left_warehouse_date, is_delivered, flagged_for_return, is_return, date_received, buyer_id, seller_id, employee_id)
+VALUES('2721 Black Sage Dr.', 'Northeast', 'Uranium 2', 'This is also used for a nuclear reactor', 'https://imgur.com/cFm57rl', '', false, CURRENT_DATE, false, false, false, CURRENT_DATE + 3, 1, 1, 61);
 
 SELECT * FROM Delivery;
 
