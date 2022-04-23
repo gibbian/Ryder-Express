@@ -78,3 +78,9 @@ SELECT * FROM Shipper;
 
 SELECT * FROM Shipper_Reviews;
 
+INSERT INTO Shipper_Reviews (text, shipper_rating, shipper_company_id)
+VALUES
+('This company is the best! They are so efficient!', 5, 1);
+
+ALTER TABLE Shipper_Reviews ADD COLUMN review_rating INTEGER DEFAULT 0;
+

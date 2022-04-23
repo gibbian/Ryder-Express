@@ -625,10 +625,139 @@ module.exports = function routes(app, logger) {
           connection.query('UPDATE Buyer_Reviews SET review_rating = ? WHERE id = ?', [req.body.review_rating, req.params.id], function (err, rows, fields) {
             connection.release();
             if (err) {
+              logger.error("Error while rating review: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error rating review"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+    // GET /shipper_review all reviews for a particular shipper
+  app.get('/shipper_reviews/:id', (req, res) => {
+    // obtain a connection from our pool of connections
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          // if there is no issue obtaining a connection, execute query and release connection
+          connection.query('SELECT * FROM Shipper_Reviews WHERE shipper_company_id = ?', req.params.id, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching reviews for company: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining reviews for company"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }   
+  });
+
+  // POST/shipper_review/:id Leave a review for a shipper company with a rating attached
+  app.post('/shipper_reviews/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("text" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `text`",
+      });
+    }
+    else if (!("shipper_rating" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `shipper_rating`",
+      });
+    }
+    else if (!("shipper_company_id" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `shipper_company_id`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query(`INSERT INTO Shipper_Reviews (text, shipper_rating, shipper_company_id) 
+          VALUES 
+          (?, ?, ?)`, 
+          [req.body.text, req.body.shipper_rating, req.body.shipper_company_id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
               logger.error("Error while posting review: \n", err);
               res.status(400).json({
                 "data": [],
                 "error": "Error posting review"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+  // PUT /shipper_review/:id for rating a particular review as helpful or unhelpful
+  app.put('/shipper_reviews/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("review_rating" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `review_rating`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query('UPDATE Shipper_Reviews SET review_rating = ? WHERE id = ?', [req.body.review_rating, req.params.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while rating review: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error rating review"
               })
             } else {
               res.status(200).json({
