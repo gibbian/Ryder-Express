@@ -1,4 +1,13 @@
+const express = require('express');
 const pool = require('../db')
+// const appr = require('../models/account');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+//const JWT_SECRET = 'sneekysneekysecret';
+//const app = express.router();
+
+
+
 
 module.exports = function routes(app, logger) {
   // GET /
@@ -758,3 +767,173 @@ module.exports = function routes(app, logger) {
     }
   });
 }
+
+  //POST /customer
+  //TODO: add validation
+  //Create new appr with bcrypted password
+  app.post('/customer',  (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        connection.query('INSERT INTO Customer(name, email, phone, apprname, password) VALUES(?,?,?,?,?)', [req.body.name, req.body.email, req.body.phone, req.body.apprname, hashedPassword], function (err, rows, fields) {
+          connection.release();
+          //if a customer does not already exist, create a new customer
+          if (err) {
+            logger.error("Error while creating customer: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error creating customer"
+            })
+          } else {
+            res.status(200).json({
+              "data": rows
+            });
+          }
+        });
+      }
+    });
+  });
+//POST /shipper
+//TODO: add validation
+//Create new appr with bcrypted password
+app.post('/shipper',  (req, res) => {
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+    if(err){
+      // if there is an issue obtaining a connection, release the connection instance and log the error
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection');
+    } else {
+      const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+      connection.query('INSERT INTO Shipper(name, email, phone, region, shipping_rates, fleet_size, num_deliveries, is_verified, apprname, password, bio) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
+       [req.body.name, req.body.email, req.body.phone, req.body.region, req.body.shipping_rates, req.body.fleet_size, 0, false, req.body.apprname, hashedPassword,''], function (err, rows, fields) {
+        connection.release();
+        //if a customer does not already exist, create a new customer
+        if (err) {
+          logger.error("Error while creating shipper: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error creating shipper"
+          })
+        } else {
+          res.status(200).json({
+            "data": rows
+          });
+        }
+      });
+    }
+  });
+});
+
+
+// //Post Customer Session
+// //Login customer returns session token
+// app.post('/customer/login', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//     if(err){
+//       // if there is an issue obtaining a connection, release the connection instance and log the error
+//       logger.error('Problem obtaining MySQL connection',err)
+//       res.status(400).send('Problem obtaining MySQL connection'); 
+//     } else {
+//       connection.query('SELECT * FROM Customer WHERE apprname = ?', req.body.apprname, function (err, rows, fields) {
+//         connection.release();
+//         if (err) {
+//           logger.error("Error while fetching customer : \n", err);
+//           res.status(400).json({
+//             "data": [],
+//             "error": "Error obtaining customer"
+//           })
+//         } else {
+//           if (rows.length === 0) {
+//             res.status(400).json({
+//               "data": [],
+//               "error": "Customer does not exist"
+//             })
+//           } else {
+//             if (bcrypt.compareSync(req.body.password, rows[0].password)) {
+//               const token = jwt.sign({
+//                 id: rows[0].id,
+//                 apprname: rows[0].apprname,
+//                 name: rows[0].name,
+//                 email: rows[0].email,
+//                 phone: rows[0].phone
+//               }, process.env.JWT_SECRET, {
+//                 expiresIn: '1h'
+//               });
+//               res.status(200).json({
+//                 "data": token
+//               });
+//             } else {
+//               res.status(400).json({
+//                 "data": [],
+//                 "error": "Incorrect password"
+//               })
+//             }
+//           }
+//         }
+//       });
+//     }
+//   });
+// });
+
+// //Post Shipper Session
+// //Login shipper returns session token
+// app.post('/shipper/login', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//     if(err){
+//       // if there is an issue obtaining a connection, release the connection instance and log the error
+//       logger.error('Problem obtaining MySQL connection',err)
+//       res.status(400).send('Problem obtaining MySQL connection'); 
+//     } else {
+//       connection.query('SELECT * FROM Shipper WHERE apprname = ?', req.body.apprname, function (err, rows, fields) {
+//         connection.release();
+//         if (err) {
+//           logger.error("Error while fetching shipper : \n", err);
+//           res.status(400).json({
+//             "data": [],
+//             "error": "Error obtaining shipper"
+//           })
+//         } else {
+//           if (rows.length === 0) {
+//             res.status(400).json({
+//               "data": [],
+//               "error": "Shipper does not exist"
+//             })
+//           } else {
+//             if (bcrypt.compareSync(req.body.password, rows[0].password)) {
+//               const token = jwt.sign({
+//                 id: rows[0].id,
+//                 apprname: rows[0].apprname,
+//                 name: rows[0].name,
+//                 email: rows[0].email,
+//                 phone: rows[0].phone
+//               }, process.env.JWT_SECRET, {
+//                 expiresIn: '1h'
+//               });
+//               res.status(200).json({
+//                 "data": token
+//               });
+//             } else {
+//               res.status(400).json({
+//                 "data": [],
+//                 "error": "Incorrect password"
+//               })
+//             }
+//           }
+//         }
+//       });
+//     }
+//   });
+// });
+
+
+
+
+
