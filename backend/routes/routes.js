@@ -511,4 +511,58 @@ module.exports = function routes(app, logger) {
       }
     });
   });
+
+  // POST/buyer_review/:id Leave a review for a seller company with a rating attached
+  app.post('/buyer_review/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("text" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `text`",
+      });
+    }
+    else if (!("buyer_rating" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `buyer_rating`",
+      });
+    }
+    else if (!("buyer_company_id" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `buyer_company_id`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query(`INSERT INTO Buyer_Reviews (text, buyer_rating, buyer_company_id) 
+          VALUES 
+          (?, ?, ?)`, 
+          [req.body.text, req.body.buyer_rating, req.body.buyer_company_id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while updating delivery: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error updating delivery"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
 }
