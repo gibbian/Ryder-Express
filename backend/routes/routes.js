@@ -369,6 +369,57 @@ module.exports = function routes(app, logger) {
     }   
   });
 
+  // PUT /delivery/:id Update a delivery at a particular id
+  app.put('/delivery/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("is_delivered" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `is_delivered`",
+      });
+    }
+    else if (!("delivered_picture" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `delivered_picture`",
+      });
+    }
+    else if (!("flagged_for_return" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `is_flagged_for_return`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query('UPDATE Delivery SET is_delivered = ?, delivered_picture = ?, flagged_for_return = ? WHERE id = ?', [req.body.is_delivered, req.body.delivered_picture, req.body.flagged_for_return, req.params.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while updating delivery: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error updating delivery"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
   // GET /shipper
   app.get('/shipper', (req, res) => {
     // obtain a connection from our pool of connections
