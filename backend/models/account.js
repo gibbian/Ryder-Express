@@ -1,7 +1,7 @@
 const knex = require('../database/knex');
 const bcrypt = require('bcrypt');
 
-const USER_TABLE = 'Account';
+const USER_TABLE = 'Customer';
 
 const createNewUser = async (username, password) => {
     console.log('Raw password:', password);

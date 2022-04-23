@@ -5,7 +5,12 @@ const mysql = require('mysql');
 const cors = require('cors');
 const { log, ExpressAPILogMiddleware } = require('@rama41222/node-logger');
 // const mysqlConnect = require('./db');
+
 const routes = require('./routes/routes.js');
+const loginroutes = require('./routes/loginroutes.js');
+
+const {authenticateJWT} = require('./middleware/auth.js');
+const router = require('./routes/account.js');
 
 // Longest uptime 24 mins before user forced shutdown
 var connection = mysql.createPool({
@@ -37,7 +42,15 @@ app.use(cors({
 app.use(ExpressAPILogMiddleware(logger, { request: true }));
 
 //include routes
+loginroutes(app, logger);
+
+//routes require authenticateJWT middleware
+//app.use('/', authenticateJWT, routes);
 routes(app, logger);
+
+//routes.use(authenticateJWT);
+
+
 
 app.get('/health', (request, response, next) => {
     const port = config.port;
