@@ -601,4 +601,43 @@ module.exports = function routes(app, logger) {
       });
     }
   });
+
+  // PUT /buyer_review/:id for rating a particular review as helpful or unhelpful
+  app.put('/buyer_reviews/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("review_rating" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `review_rating`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query('UPDATE Buyer_Reviews SET review_rating = ? WHERE id = ?', [req.body.review_rating, req.params.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while posting review: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error posting review"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
 }

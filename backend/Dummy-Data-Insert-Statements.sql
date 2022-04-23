@@ -1,10 +1,12 @@
-SELECT * FROM Account;
+
 
 INSERT INTO Buyer_Reviews (text, buyer_rating, buyer_company_id)
 VALUES
 ('This company is the best! They are so nice!', 5, 1);
 
 SELECT * FROM Buyer_Reviews;
+
+ALTER TABLE Buyer_Reviews ADD COLUMN review_rating INTEGER DEFAULT 0;
 
 SELECT * FROM Customer;
 INSERT INTO Customer (id, name, email, phone)
