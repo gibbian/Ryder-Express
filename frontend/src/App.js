@@ -78,7 +78,6 @@ function App () {
 
   return (
       <div className="App">
-        <Navbar />
         <div className='content'>
           <Routes>
             <Route exact path="/" element={<SignIn/>}/>
