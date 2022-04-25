@@ -1,4 +1,13 @@
+const express = require('express');
 const pool = require('../db')
+// const appr = require('../models/account');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+//const JWT_SECRET = 'sneekysneekysecret';
+//const app = express.router();
+
+
+
 
 module.exports = function routes(app, logger) {
   // GET /
@@ -369,6 +378,57 @@ module.exports = function routes(app, logger) {
     }   
   });
 
+  // PUT /delivery/:id Update a delivery at a particular id
+  app.put('/delivery/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("is_delivered" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `is_delivered`",
+      });
+    }
+    else if (!("delivered_picture" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `delivered_picture`",
+      });
+    }
+    else if (!("flagged_for_return" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `is_flagged_for_return`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query('UPDATE Delivery SET is_delivered = ?, delivered_picture = ?, flagged_for_return = ? WHERE id = ?', [req.body.is_delivered, req.body.delivered_picture, req.body.flagged_for_return, req.params.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while updating delivery: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error updating delivery"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
   // GET /shipper
   app.get('/shipper', (req, res) => {
     // obtain a connection from our pool of connections
@@ -460,4 +520,420 @@ module.exports = function routes(app, logger) {
       }
     });
   });
+
+  // GET /buyer_review all reviews for a particular buyer
+  app.get('/buyer_reviews/:company_id', (req, res) => {
+    // obtain a connection from our pool of connections
+    if (!("company_id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `company_id`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          // if there is no issue obtaining a connection, execute query and release connection
+          connection.query('SELECT * FROM Buyer_Reviews WHERE buyer_company_id = ?', req.params.company_id, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching reviews for company: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining reviews for company"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }   
+  });
+
+  // POST/buyer_review/:id Leave a review for a seller company with a rating attached
+  app.post('/buyer_reviews/:company_id', (req, res) => {
+    if (!("company_id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `company_id`",
+      });
+    }
+    else if (!("text" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `text`",
+      });
+    }
+    else if (!("buyer_rating" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `buyer_rating`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query(`INSERT INTO Buyer_Reviews (text, buyer_rating, buyer_company_id) 
+          VALUES 
+          (?, ?, ?)`, 
+          [req.body.text, req.body.buyer_rating, req.params.company_id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while posting review: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error posting review"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+  // PUT /buyer_review/:id for rating a particular review as helpful or unhelpful
+  app.put('/buyer_reviews/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("review_rating" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `review_rating`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query('UPDATE Buyer_Reviews SET review_rating = ? WHERE id = ?', [req.body.review_rating, req.params.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while rating review: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error rating review"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+    // GET /shipper_review all reviews for a particular shipper
+  app.get('/shipper_reviews/:company_id', (req, res) => {
+    // obtain a connection from our pool of connections
+    if (!("company_id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `company_id`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          // if there is no issue obtaining a connection, execute query and release connection
+          connection.query('SELECT * FROM Shipper_Reviews WHERE shipper_company_id = ?', req.params.company_id, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching reviews for company: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining reviews for company"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }   
+  });
+
+  // POST/shipper_review/:id Leave a review for a shipper company with a rating attached
+  app.post('/shipper_reviews/:company_id', (req, res) => {
+    if (!("company_id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `company_id`",
+      });
+    }
+    else if (!("text" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `text`",
+      });
+    }
+    else if (!("shipper_rating" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `shipper_rating`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query(`INSERT INTO Shipper_Reviews (text, shipper_rating, shipper_company_id) 
+          VALUES 
+          (?, ?, ?)`, 
+          [req.body.text, req.body.shipper_rating, req.params.company_id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while posting review: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error posting review"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+  // PUT /shipper_review/:id for rating a particular review as helpful or unhelpful
+  app.put('/shipper_reviews/:id', (req, res) => {
+    if (!("id" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `id`",
+      });
+    }
+    else if (!("review_rating" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `review_rating`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection'); 
+        } else {
+          connection.query('UPDATE Shipper_Reviews SET review_rating = ? WHERE id = ?', [req.body.review_rating, req.params.id], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while rating review: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error rating review"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
 }
+
+  //POST /customer
+  //TODO: add validation
+  //Create new appr with bcrypted password
+  app.post('/customer',  (req, res) => {
+    // obtain a connection from our pool of connections
+    pool.getConnection(function (err, connection){
+      if(err){
+        // if there is an issue obtaining a connection, release the connection instance and log the error
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection'); 
+      } else {
+        const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+        connection.query('INSERT INTO Customer(name, email, phone, apprname, password) VALUES(?,?,?,?,?)', [req.body.name, req.body.email, req.body.phone, req.body.apprname, hashedPassword], function (err, rows, fields) {
+          connection.release();
+          //if a customer does not already exist, create a new customer
+          if (err) {
+            logger.error("Error while creating customer: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error creating customer"
+            })
+          } else {
+            res.status(200).json({
+              "data": rows
+            });
+          }
+        });
+      }
+    });
+  });
+//POST /shipper
+//TODO: add validation
+//Create new appr with bcrypted password
+app.post('/shipper',  (req, res) => {
+  // obtain a connection from our pool of connections
+  pool.getConnection(function (err, connection){
+    if(err){
+      // if there is an issue obtaining a connection, release the connection instance and log the error
+      logger.error('Problem obtaining MySQL connection',err)
+      res.status(400).send('Problem obtaining MySQL connection');
+    } else {
+      const hashedPassword = bcrypt.hashSync(req.body.password, 10);
+      connection.query('INSERT INTO Shipper(name, email, phone, region, shipping_rates, fleet_size, num_deliveries, is_verified, apprname, password, bio) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
+       [req.body.name, req.body.email, req.body.phone, req.body.region, req.body.shipping_rates, req.body.fleet_size, 0, false, req.body.apprname, hashedPassword,''], function (err, rows, fields) {
+        connection.release();
+        //if a customer does not already exist, create a new customer
+        if (err) {
+          logger.error("Error while creating shipper: \n", err);
+          res.status(400).json({
+            "data": [],
+            "error": "Error creating shipper"
+          })
+        } else {
+          res.status(200).json({
+            "data": rows
+          });
+        }
+      });
+    }
+  });
+});
+
+
+// //Post Customer Session
+// //Login customer returns session token
+// app.post('/customer/login', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//     if(err){
+//       // if there is an issue obtaining a connection, release the connection instance and log the error
+//       logger.error('Problem obtaining MySQL connection',err)
+//       res.status(400).send('Problem obtaining MySQL connection'); 
+//     } else {
+//       connection.query('SELECT * FROM Customer WHERE apprname = ?', req.body.apprname, function (err, rows, fields) {
+//         connection.release();
+//         if (err) {
+//           logger.error("Error while fetching customer : \n", err);
+//           res.status(400).json({
+//             "data": [],
+//             "error": "Error obtaining customer"
+//           })
+//         } else {
+//           if (rows.length === 0) {
+//             res.status(400).json({
+//               "data": [],
+//               "error": "Customer does not exist"
+//             })
+//           } else {
+//             if (bcrypt.compareSync(req.body.password, rows[0].password)) {
+//               const token = jwt.sign({
+//                 id: rows[0].id,
+//                 apprname: rows[0].apprname,
+//                 name: rows[0].name,
+//                 email: rows[0].email,
+//                 phone: rows[0].phone
+//               }, process.env.JWT_SECRET, {
+//                 expiresIn: '1h'
+//               });
+//               res.status(200).json({
+//                 "data": token
+//               });
+//             } else {
+//               res.status(400).json({
+//                 "data": [],
+//                 "error": "Incorrect password"
+//               })
+//             }
+//           }
+//         }
+//       });
+//     }
+//   });
+// });
+
+// //Post Shipper Session
+// //Login shipper returns session token
+// app.post('/shipper/login', (req, res) => {
+//   // obtain a connection from our pool of connections
+//   pool.getConnection(function (err, connection){
+//     if(err){
+//       // if there is an issue obtaining a connection, release the connection instance and log the error
+//       logger.error('Problem obtaining MySQL connection',err)
+//       res.status(400).send('Problem obtaining MySQL connection'); 
+//     } else {
+//       connection.query('SELECT * FROM Shipper WHERE apprname = ?', req.body.apprname, function (err, rows, fields) {
+//         connection.release();
+//         if (err) {
+//           logger.error("Error while fetching shipper : \n", err);
+//           res.status(400).json({
+//             "data": [],
+//             "error": "Error obtaining shipper"
+//           })
+//         } else {
+//           if (rows.length === 0) {
+//             res.status(400).json({
+//               "data": [],
+//               "error": "Shipper does not exist"
+//             })
+//           } else {
+//             if (bcrypt.compareSync(req.body.password, rows[0].password)) {
+//               const token = jwt.sign({
+//                 id: rows[0].id,
+//                 apprname: rows[0].apprname,
+//                 name: rows[0].name,
+//                 email: rows[0].email,
+//                 phone: rows[0].phone
+//               }, process.env.JWT_SECRET, {
+//                 expiresIn: '1h'
+//               });
+//               res.status(200).json({
+//                 "data": token
+//               });
+//             } else {
+//               res.status(400).json({
+//                 "data": [],
+//                 "error": "Incorrect password"
+//               })
+//             }
+//           }
+//         }
+//       });
+//     }
+//   });
+// });
+
+
+
+
+
