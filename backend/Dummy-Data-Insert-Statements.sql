@@ -13,6 +13,7 @@ INSERT INTO Customer (id, name, email, phone)
 VALUES
 (1, 'Timothy Turner', 'ttturner42@gmail.com', '972-943-9506');
 
+SELECT id FROM Shipper WHERE name = 'Dallas Shipping Co';
 
 SELECT * FROM Dates;
 
