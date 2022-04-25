@@ -21,18 +21,3 @@
 .App-link {
   color: #09d3ac;
 }
-
-.Navbar {
-  padding: 1%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 100%;
-  margin: auto;
-  border-bottom: 1px solid #282c34;
-  background-color: #adb6c4;
-}
-
- .Navbar a:hover{
-  color:rgb(245, 69, 69)
-}
