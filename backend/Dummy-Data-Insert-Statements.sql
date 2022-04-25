@@ -1,8 +1,19 @@
-SELECT * FROM Account;
+
+
+INSERT INTO Buyer_Reviews (text, buyer_rating, buyer_company_id)
+VALUES
+('This company is the best! They are so nice!', 5, 1);
 
 SELECT * FROM Buyer_Reviews;
 
+ALTER TABLE Buyer_Reviews ADD COLUMN review_rating INTEGER DEFAULT 0;
+
 SELECT * FROM Customer;
+INSERT INTO Customer (id, name, email, phone)
+VALUES
+(1, 'Timothy Turner', 'ttturner42@gmail.com', '972-943-9506');
+
+SELECT id FROM Shipper WHERE name = 'Dallas Shipping Co';
 
 SELECT * FROM Dates;
 
@@ -24,6 +35,8 @@ VALUES
 (TRUE, FALSE, CURRENT_DATE + 3, 3),
 (TRUE, FALSE, CURRENT_DATE + 4, 3);
 
+INSERT INTO Delivery (destination, origin_loc, product_name, product_desc, product_picture, delivered_picture, left_warehouse, left_warehouse_date, is_delivered, flagged_for_return, is_return, date_received, buyer_id, seller_id, employee_id)
+VALUES('2721 Black Sage Dr.', 'Northeast', 'Uranium 2', 'This is also used for a nuclear reactor', 'https://imgur.com/cFm57rl', '', false, CURRENT_DATE, false, false, false, CURRENT_DATE + 3, 1, 1, 61);
 
 SELECT * FROM Delivery;
 
@@ -55,10 +68,20 @@ VALUES
 ('All My Sons', 'ihavetoomanykids@gmail.com', '205-975-3486', 'Deep South', 200, 15, 0, false),
 ('West Coast Elites', 'educatedandstrong@gmail.com', '213-473-9763', 'West Coast', 500, 5, 0, false);
 
+UPDATE Shipper SET bio = 'We love the cold up here!' WHERE id = 1;
+UPDATE Shipper SET bio = 'It is hot, and we are hot!' WHERE id = 2;
+UPDATE Shipper SET bio = 'Gotta love that west coast air!' WHERE id = 3;
+
 CREATE INDEX names
 ON Shipper(name);
 
 SELECT * FROM Shipper;
 
 SELECT * FROM Shipper_Reviews;
+
+INSERT INTO Shipper_Reviews (text, shipper_rating, shipper_company_id)
+VALUES
+('This company is the best! They are so efficient!', 5, 1);
+
+ALTER TABLE Shipper_Reviews ADD COLUMN review_rating INTEGER DEFAULT 0;
 
