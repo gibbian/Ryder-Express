@@ -8,6 +8,7 @@ import {Home} from './components/Home';
 import {Navbar} from './components/Navbar/Navbar';
 import {ProductPage} from './components/ProductPage';
 import {Profile} from './components/Profile';
+import {CompanyDetails} from './app/CompanyDetails';
 
 // React functional component
 function App () {
@@ -80,7 +81,7 @@ function App () {
         <Navbar/>
         <div className='content'>
           <Routes>
-            <Route exact path="/" element={<Home/>}/>
+            <Route exact path="/" element={<CompanyDetails/>}/>
             <Route exact path="/ProductPage" element={<ProductPage/>}/>
             <Route exact path="/Profile" element={<Profile/>}/>
           </Routes>
