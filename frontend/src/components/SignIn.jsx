@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import longLogo from '../assets/images/long-RyderExpress.svg';
 import { grey } from '@mui/material/colors';
+import axios from 'axios';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props) {
@@ -26,6 +27,12 @@ function Copyright(props) {
       {'.'}
     </Typography>
   );
+}
+
+const fetchBase = () => {
+  axios.get(`http://localhost:8000/shipper`).then((res)=>{
+    alert(res);
+  })
 }
 
 const theme = createTheme();
@@ -83,11 +90,12 @@ export const SignIn = () =>{
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
               justifyContent="space-around"
+              onClick={fetchBase}
             >
               Sign In
             </Button>
             <Grid>
-                <Link href="#" variant="body2" >
+                <Link href="/SignUp" variant="body2" >
                   {"Don't have an account? Sign Up"}
                 </Link>
             </Grid>
