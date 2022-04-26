@@ -1138,6 +1138,42 @@ app.put('/shipper/:username', (req, res) => {
     });
   }
 });
+//Mark a shipper for is_verified
+app.put('/shipper/:id/verify', (req, res) => {
+  if (!("id" in req.params)){
+    res.status(400).send({
+      success: false,
+      response: "Missing required field: `id`",
+    });
+  }
+  else{
+    pool.getConnection(function (err, connection){
+      if(err){
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        //if the shipper has over 50 num_deliveries, they are verified
+        connection.query('UPDATE Shipper SET is_verified = 1 WHERE id = ? AND num_deliveries >= 50', [req.params.id], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while updating shipper: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error updating shipper"
+            })
+          } else {
+            res.status(200).json({
+              "data": rows
+            });
+            console.log(req.params.username + " is now verified");
+          }
+        });
+      };
+    });
+  }
+});
+
+
 
 //BELOW ARE NOT NECESSARY FOR USER STORIES  VVVV
 
