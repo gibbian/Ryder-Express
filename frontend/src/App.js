@@ -81,7 +81,7 @@ function App () {
       <div className="App">
         <div className='content'>
           <Routes>
-            <Route exact path="/" element={<SignIn/>}/>
+            <Route exact path="/" element={<Profile/>}/>
             <Route exact path="/SignIn" element={<SignIn/>}/>
             <Route exact path="/ProductPage" element={<ProductPage/>}/>
             <Route exact path="/Profile" element={<Profile/>}/>
