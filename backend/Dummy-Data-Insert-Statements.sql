@@ -9,9 +9,16 @@ SELECT * FROM Buyer_Reviews;
 ALTER TABLE Buyer_Reviews ADD COLUMN review_rating INTEGER DEFAULT 0;
 
 SELECT * FROM Customer;
-INSERT INTO Customer (id, name, email, phone)
+INSERT INTO Customer (id, name, email, phone, username, password)
 VALUES
-(1, 'Timothy Turner', 'ttturner42@gmail.com', '972-943-9506');
+(1, 'Timothy Turner', 'ttturner42@gmail.com', '972-943-9506', 'timmyT', 'cosmo');
+
+
+
+UPDATE Shipper SET username = 'ElitesWC', password = 'blueberry' WHERE id =3;
+
+
+ DELETE FROM Shipper WHERE username = 'BigShipping';
 
 SELECT id FROM Shipper WHERE name = 'Dallas Shipping Co';
 
