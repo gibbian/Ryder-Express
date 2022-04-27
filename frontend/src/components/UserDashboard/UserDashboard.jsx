@@ -37,9 +37,12 @@ export const BasicMenu = ({userName}) => {
           aria-controls={open ? 'basic-menu' : undefined}
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
-          onClick={handleClick}
+          onClick={handleClick}           
         >
-          {userName}
+          <text>
+            {userName}
+          </text>
+          
         </Button>
         <Menu
           id="basic-menu"
@@ -93,7 +96,9 @@ export const UserDashboard = (props) =>{
                             aria-expanded={open ? 'true' : undefined}
                             onClick={handleNameClick}
                         >
-                            {userName}
+                            <u>
+                                {userName}
+                            </u>
                         </Button>
                         <Menu
                         id="basic-menu"
@@ -104,8 +109,7 @@ export const UserDashboard = (props) =>{
                             'aria-labelledby': 'basic-button',
                         }}
                         >
-                            <MenuItem>Profile</MenuItem>
-                            <MenuItem>My account</MenuItem>
+                            <MenuItem>Home Page</MenuItem>
                             <MenuItem>Logout</MenuItem>
                         </Menu>
                     </Typography>
