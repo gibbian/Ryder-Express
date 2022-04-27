@@ -7,7 +7,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import {Home} from './components/Home';
 import {Navbar} from './components/Navbar/Navbar';
 import {ProductPage} from './components/ProductPage';
-import {Profile} from './components/Profile';
+import Profile from './components/Profile';
 import {SignIn} from './components/SignIn';
 import {SignUp} from './components/SignUp';
 
@@ -35,61 +35,61 @@ function App () {
     })
   }
 
-  // fetches vals of db via GET request
-  const fetchVals = () => {
-    axios.get(`http://${url}:8000/values`).then(
-      res => {
-        const values = res.data.data;
-        console.log(values);
-        setValues(values)
-    }).catch(err => {
-      console.log(err)
-    });
-  }
+  // // fetches vals of db via GET request
+  // const fetchVals = () => {
+  //   axios.get(`http://${url}:8000/values`).then(
+  //     res => {
+  //       const values = res.data.data;
+  //       console.log(values);
+  //       setValues(values)
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });
+  // }
 
-  // handle input form submission to backend via POST request
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let prod = number * number;
-    axios.post(`http://${url}:8000/multplynumber`, {product: prod}).then(res => {
-      console.log(res);
-      fetchVals();
-    }).catch(err => {
-      console.log(err)
-    });;
-    setNumber("");
-  }
+  // // handle input form submission to backend via POST request
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   let prod = number * number;
+  //   axios.post(`http://${url}:8000/multplynumber`, {product: prod}).then(res => {
+  //     console.log(res);
+  //     fetchVals();
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });;
+  //   setNumber("");
+  // }
 
-  // handle intialization and setup of database table, can reinitialize to wipe db
-  const reset = () => {
-    axios.post(`http://${url}:8000/reset`).then(res => {
-      console.log(res);
-      fetchVals();
-    }).catch(err => {
-      console.log(err)
-    });;
-  }
+  // // handle intialization and setup of database table, can reinitialize to wipe db
+  // const reset = () => {
+  //   axios.post(`http://${url}:8000/reset`).then(res => {
+  //     console.log(res);
+  //     fetchVals();
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });;
+  // }
 
-  // tell app to fetch values from db on first load (if initialized)
-  // the comment below silences an error that doesn't matter.=
-  useEffect(() => {
-    fetchVals();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // // tell app to fetch values from db on first load (if initialized)
+  // // the comment below silences an error that doesn't matter.=
+  // useEffect(() => {
+  //   fetchVals();
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   return (
-      <div className="App">
-        <div className='content'>
-          <Routes>
-            <Route exact path="/" element={<Profile/>}/>
-            <Route exact path="/SignIn" element={<SignIn/>}/>
-            <Route exact path="/ProductPage" element={<ProductPage/>}/>
-            <Route exact path="/Profile" element={<Profile/>}/>
-            <Route exact path="/SignUp" element={<SignUp/>}/>
-          </Routes>
-        </div>
-      </div>      
-  );
+    <div className="App">
+      <div className='content'>
+        <Routes>
+          <Route exact path="/" element={<Profile/>}/>
+          <Route exact path="/SignIn" element={<SignIn/>}/>
+          <Route exact path="/ProductPage" element={<ProductPage/>}/>
+          <Route exact path="/Profile" element={<Profile/>}/>
+          <Route exact path="/SignUp" element={<SignUp/>}/>
+        </Routes>
+      </div>
+    </div>      
+);
 }
 
 export default App;
