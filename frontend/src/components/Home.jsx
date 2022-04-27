@@ -15,7 +15,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { ProductCard } from "./ProductCard";
 
-//const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 const theme = createTheme();
 
 export const Home = () =>{
@@ -35,10 +34,10 @@ export const Home = () =>{
 
     useEffect(() => {
         axios.get(`http://localhost:8000/shipper`).then(
-            res => {
-                const values = res.data.data;
-                console.log(values);
-                setCards(values);
+          res => {
+            const values = res.data.data;
+            console.log(values);
+            setCards(values);
         })
     }, []);
     
@@ -82,9 +81,9 @@ export const Home = () =>{
               {/* End hero unit */}
               <Grid container spacing={4}>
                 {cards.map((card) => (
-                    <Grid item key={card.id} xs={12} sm={8} md={12}>
-                        <ProductCard card={card}></ProductCard>
-                    </Grid>
+                  <Grid item key={card.id} xs={12} sm={8} md={12}>
+                    <ProductCard card={card}></ProductCard>
+                  </Grid>
                 ))}
               </Grid>
             </Container>
