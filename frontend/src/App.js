@@ -3,9 +3,7 @@ import './App.css';
 import axios from 'axios';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
-
 import {Home} from './components/Home';
-import {Navbar} from './components/Navbar/Navbar';
 import {ProductPage} from './components/ProductPage';
 import {Profile} from './components/Profile';
 import {SignIn} from './components/SignIn';
@@ -39,39 +37,39 @@ function App () {
   }
 
   // fetches vals of db via GET request
-  const fetchVals = () => {
-    axios.get(`http://${url}:8000/values`).then(
-      res => {
-        const values = res.data.data;
-        console.log(values);
-        setValues(values)
-    }).catch(err => {
-      console.log(err)
-    });
-  }
+  // const fetchVals = () => {
+  //   axios.get(`http://${url}:8000/values`).then(
+  //     res => {
+  //       const values = res.data.data;
+  //       console.log(values);
+  //       setValues(values)
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });
+  // }
 
-  // handle input form submission to backend via POST request
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    let prod = number * number;
-    axios.post(`http://${url}:8000/multplynumber`, {product: prod}).then(res => {
-      console.log(res);
-      fetchVals();
-    }).catch(err => {
-      console.log(err)
-    });;
-    setNumber("");
-  }
+  // // handle input form submission to backend via POST request
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   let prod = number * number;
+  //   axios.post(`http://${url}:8000/multplynumber`, {product: prod}).then(res => {
+  //     console.log(res);
+  //     fetchVals();
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });;
+  //   setNumber("");
+  // }
 
-  // handle intialization and setup of database table, can reinitialize to wipe db
-  const reset = () => {
-    axios.post(`http://${url}:8000/reset`).then(res => {
-      console.log(res);
-      fetchVals();
-    }).catch(err => {
-      console.log(err)
-    });;
-  }
+  // // handle intialization and setup of database table, can reinitialize to wipe db
+  // const reset = () => {
+  //   axios.post(`http://${url}:8000/reset`).then(res => {
+  //     console.log(res);
+  //     fetchVals();
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });;
+  // }
 
   // tell app to fetch values from db on first load (if initialized)
   // the comment below silences an error that doesn't matter.=
@@ -91,7 +89,7 @@ function App () {
             <Route exact path="/ProductPage" element={<ProductPage token={token}/>}/>
             <Route exact path="/Profile" element={<Profile token={token}/>}/>
             <Route exact path="/SignUp" element={<SignUp setToken={setToken}/>}/>
-            <Route exact path="/home" element={<Home token={token}/>}/>
+            <Route exact path="/Home" element={<Home token={token}/>}/>
           </Routes>
         </div>
       </div>      
