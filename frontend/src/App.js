@@ -8,6 +8,8 @@ import {Home} from './components/Home';
 import {Navbar} from './components/Navbar/Navbar';
 import {ProductPage} from './components/ProductPage';
 import {Profile} from './components/Profile';
+import {SignIn} from './components/SignIn';
+import {SignUp} from './components/SignUp';
 
 // React functional component
 function App () {
@@ -77,12 +79,13 @@ function App () {
 
   return (
       <div className="App">
-        <Navbar/>
         <div className='content'>
           <Routes>
-            <Route exact path="/" element={<Home/>}/>
+            <Route exact path="/" element={<SignIn/>}/>
+            <Route exact path="/SignIn" element={<SignIn/>}/>
             <Route exact path="/ProductPage" element={<ProductPage/>}/>
             <Route exact path="/Profile" element={<Profile/>}/>
+            <Route exact path="/SignUp" element={<SignUp/>}/>
           </Routes>
         </div>
       </div>      
