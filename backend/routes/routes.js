@@ -532,6 +532,40 @@ module.exports = function routes(app, logger) {
     }
   });
 
+  //Get /shipper by username
+  app.get('/shipper/:username', (req, res) => {
+    if (!("username" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `username`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection');
+        } else {
+          connection.query('SELECT * FROM Shipper WHERE username = ?', req.params.username, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching shipper: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining shipper"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+
   // GET /shipper
   app.get('/shipper', (req, res) => {
     // obtain a connection from our pool of connections
@@ -560,7 +594,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // GET /employees by company
+  // GET /shipper by id
   app.get('/shipper/:id', (req, res) => {
     // obtain a connection from our pool of connections
     if (!("id" in req.params)){
@@ -623,6 +657,41 @@ module.exports = function routes(app, logger) {
       }
     });
   });
+
+  // Get /customer by username
+  app.get('/customer/:username', (req, res) => {
+    if (!("username" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `username`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection');
+        } else {
+          connection.query('SELECT * FROM Customer WHERE username = ?', req.params.username, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching customer: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining customer"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+
   //GET /customer_id by name
   app.get('/customer/:name', (req, res) => {
     // obtain a connection from our pool of connections
