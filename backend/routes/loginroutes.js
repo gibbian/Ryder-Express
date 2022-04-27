@@ -61,32 +61,10 @@ app.post('/customer/login', (req, res) => {
 
 
 
-//               if (bcrypt.compareSync(req.body.password, rows[0].password)) {
-//                 const token = jwt.sign({
-//                   id: rows[0].id,
-//                   username: rows[0].username,
-//                   name: rows[0].name,
-//                   email: rows[0].email,
-//                   phone: rows[0].phone
-//                 }, process.env.JWT_SECRET, {
-//                   expiresIn: '1h'
-//                 });
-//                 res.status(200).json({
-//                   "data": token
-//                 });
-//               } else {
-//                 res.status(400).json({
-//                   "data": [],
-//                   "error": "Incorrect password"
-//                 })
-//               }
-//             }
-//           }
-//         });
-//       }
-//     });
-//   });
-  
+
+
+
+
   //Post Shipper Session
   //Login shipper returns session token
   app.post('/shipper/login', (req, res) => {
@@ -112,23 +90,23 @@ app.post('/customer/login', (req, res) => {
                 "error": "Shipper does not exist"
               })
             } else {
-              if (bcrypt.compareSync(req.body.password, rows[0].password)) {
+              if(req.body.password === rows[0].password){
                 const token = jwt.sign({
-                  id: rows[0].id,
-                  username: rows[0].username,
-                  name: rows[0].name,
-                  email: rows[0].email,
-                  phone: rows[0].phone
-                }, process.env.JWT_SECRET, {
-                  expiresIn: '1h'
+                    username: req.body.username,
+                    password: req.body.password
+                }, 'secret', {
+                    expiresIn: '1h'
                 });
                 res.status(200).json({
-                  "data": token
-                });
+                    "data": [{
+                        "token": token
+                    }],
+                    "error": null
+                })
               } else {
                 res.status(400).json({
-                  "data": [],
-                  "error": "Incorrect password"
+                    "data": [],
+                    "error": "Incorrect password"
                 })
               }
             }
@@ -137,6 +115,9 @@ app.post('/customer/login', (req, res) => {
       }
     });
   });
-};
+}
+
+
+
 
   //16.14.2
