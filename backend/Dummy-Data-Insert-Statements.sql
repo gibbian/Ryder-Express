@@ -20,6 +20,8 @@ UPDATE Shipper SET username = 'ElitesWC', password = 'blueberry' WHERE id =3;
 
  DELETE FROM Shipper WHERE username = 'BigShipping';
 
+DELETE FROM Shipper WHERE username = 'DallasSC';
+
 SELECT id FROM Shipper WHERE name = 'Dallas Shipping Co';
 
 SELECT * FROM Dates;
