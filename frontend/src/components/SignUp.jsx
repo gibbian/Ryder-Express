@@ -14,32 +14,26 @@ import longLogo from '../assets/images/long-RyderExpress.svg';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { handleChange } from "react";
 import { useState } from "react";
+import { apiCalls } from '../common/apiCalls';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
+
 
 const theme = createTheme();
 
-export const SignUp = () =>{
-    const [ isShipper, setIsShipper ] = useState(false);
+export const SignUp = () => {
+  const [isShipper, setIsShipper] = useState(false);
+  const apiCall = new apiCalls();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    if(isShipper){
+      console.log(typeof(data.get('shipping-rate')));
+      //apiCall.shipperRegister(data.get('name'), data.get('email'), data.get('phone'), data.get('region'), parseInt(data.get('shipping-rate')), parseInt(data.get('fleet-size')), data.get('username'), data.get('password'));
+    }
+    else{
+      apiCall.buyerRegister(data.get('name'), data.get('email'), data.get('phone'), data.get('username'), data.get('password'));
+    }
   };
 
   return (
@@ -53,8 +47,9 @@ export const SignUp = () =>{
             flexDirection: 'column',
             alignItems: 'center',
           }}
+          onsubmit={handleSubmit}
         >
-          <img src={longLogo} alt="Ryder Express" width="100%"/>
+          <img src={longLogo} alt="Ryder Express" width="100%" />
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
@@ -82,6 +77,28 @@ export const SignUp = () =>{
                 />
               </Grid>
               <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="phone"
+                    label="Phone Number"
+                    type="number"
+                    id="phone-number"
+                    autoComplete="phone number"
+                  />
+                </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="username"
+                  name="username"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
@@ -94,39 +111,50 @@ export const SignUp = () =>{
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox checked={isShipper} color="primary" onChange={e => setIsShipper(e.target.checked)}/>}
+                  control={<Checkbox checked={isShipper} color="primary" onChange={e => setIsShipper(e.target.checked)} />}
                   label="Are you a Shipper?"
                 />
-                </Grid>
+              </Grid>
             </Grid>
-                {isShipper && (
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                            required
-                            fullWidth
-                            name="phone number"
-                            label="Phone Number"
-                            type="number"
-                            id="phone number"
-                            autoComplete="phone number"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                            required
-                            fullWidth
-                            name="region"
-                            label="Region"
-                            type="region"
-                            id="region"
-                            autoComplete="region"
-                            />
-                        </Grid>
-                    </Grid>
-                )}
+            {isShipper && (
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="region"
+                    label="Region"
+                    type="region"
+                    id="region"
+                    autoComplete="region"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="shippng-rate"
+                    label="Shipping Rate (Dollars per day)"
+                    type="number"
+                    id="shipping-rate"
+                    autoComplete="shipping rate"
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    name="fleet-size"
+                    label="Fleet Size"
+                    type="number"
+                    id="fleet-size"
+                    autoComplete="fleet size"
+                  />
+                </Grid>
+              </Grid>
+            )}
 
-            
+
             <Button
               type="submit"
               fullWidth
@@ -136,7 +164,7 @@ export const SignUp = () =>{
               Sign Up
             </Button>
             <Link href="/SignIn" variant="body2">
-                Already have an account? Sign in
+              Already have an account? Sign in
             </Link>
           </Box>
         </Box>

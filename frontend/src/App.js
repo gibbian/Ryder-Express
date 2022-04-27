@@ -10,6 +10,7 @@ import {ProductPage} from './components/ProductPage';
 import {Profile} from './components/Profile';
 import {SignIn} from './components/SignIn';
 import {SignUp} from './components/SignUp';
+import {UserDashboard} from './components/UserDashboard/UserDashboard';
 
 // React functional component
 function App () {
@@ -82,6 +83,7 @@ function App () {
         <div className='content'>
           <Routes>
             <Route exact path="/" element={<SignIn/>}/>
+            <Route exact path="/UserDashboard" element={<UserDashboard/>}/>
             <Route exact path="/SignIn" element={<SignIn/>}/>
             <Route exact path="/ProductPage" element={<ProductPage/>}/>
             <Route exact path="/Profile" element={<Profile/>}/>
