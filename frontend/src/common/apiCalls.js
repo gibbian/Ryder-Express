@@ -4,7 +4,7 @@ import { apiEndpoint, apiConfig } from './apiConfig';
 export class apiCalls {
     getShipperToken() {
         return new Promise((resolve, reject) => {
-            axios.post(`${apiEndpoint}/shipper/login`, {
+            axios.get(`${apiEndpoint}/shipper/login`, {
                 headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
             })
                 .then(res => {
@@ -24,7 +24,7 @@ export class apiCalls {
 
     getCustomerToken() {
         return new Promise((resolve, reject) => {
-            axios.post(`${apiEndpoint}/customer/login`, {
+            axios.get(`${apiEndpoint}/customer/login`, {
                 headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
             })
                 .then(res => {
