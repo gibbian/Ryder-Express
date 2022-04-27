@@ -8,7 +8,6 @@
     "@mui/icons-material": "^5.6.2",
     "@mui/material": "^5.6.3",
     "@mui/styled-engine-sc": "^5.6.1",
-    "@types/recharts": "^1.8.23",
     "@mui/x-data-grid": "^5.10.0",
     "axios": "^0.21.1",
     "boostrap": "^2.0.0",
@@ -19,8 +18,7 @@
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "^4.0.3",
-    "styled-components": "^5.3.5",
-    "typescript": "^4.6.3"
+    "styled-components": "^5.3.5"
   },
   "scripts": {
     "start": "react-scripts start",
