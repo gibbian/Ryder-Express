@@ -10,12 +10,15 @@ import {ProductPage} from './components/ProductPage';
 import {Profile} from './components/Profile';
 import {SignIn} from './components/SignIn';
 import {SignUp} from './components/SignUp';
+import {UserDashboard} from './components/UserDashboard/UserDashboard';
 
 // React functional component
 function App () {
   // state for storage of the information on the webpage of forms and list, uses hooks
   const [number, setNumber] = useState("")
   const [values, setValues] = useState([])
+  const [token, setToken] = useState()
+  const [updateToken, setUpdateToken] = useState()
 
   // ENTER YOUR EC2 PUBLIC IP/URL HERE
   const ec2_url = ''
@@ -73,19 +76,22 @@ function App () {
   // tell app to fetch values from db on first load (if initialized)
   // the comment below silences an error that doesn't matter.=
   useEffect(() => {
-    fetchVals();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    const token = localStorage.getItem('token');;
+    setToken(localStorage.token);
+    setUpdateToken(token);
+  }, [token])
 
   return (
       <div className="App">
         <div className='content'>
           <Routes>
-            <Route exact path="/" element={<SignIn/>}/>
-            <Route exact path="/SignIn" element={<SignIn/>}/>
-            <Route exact path="/ProductPage" element={<ProductPage/>}/>
-            <Route exact path="/Profile" element={<Profile/>}/>
-            <Route exact path="/SignUp" element={<SignUp/>}/>
+            <Route exact path="/" element={<SignIn setToken={setToken}/>}/>
+            <Route exact path="/SignIn" element={<SignIn setToken={setToken}/>}/>
+            <Route exact path="/UserDashboard" element={<UserDashboard token={token}/>}/>
+            <Route exact path="/ProductPage" element={<ProductPage token={token}/>}/>
+            <Route exact path="/Profile" element={<Profile token={token}/>}/>
+            <Route exact path="/SignUp" element={<SignUp setToken={setToken}/>}/>
+            <Route exact path="/home" element={<Home token={token}/>}/>
           </Routes>
         </div>
       </div>      

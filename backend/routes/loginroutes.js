@@ -1,4 +1,6 @@
+const express = require('express');
 const pool = require('../db');
+
 //const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -12,8 +14,8 @@ app.post('/customer/login', (req, res) => {
     pool.getConnection(function (err, connection){
       if(err){
         // if there is an issue obtaining a connection, release the connection instance and log the error
-        logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection');
+        logger.error('Problem obtaining MySQL connection',err);
+        res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
         connection.query('SELECT * FROM Customer WHERE username = ?', req.body.username, function (err, rows, fields) {
           connection.release();
