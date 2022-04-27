@@ -3,6 +3,7 @@ const pool = require('../db')
 // const appr = require('../models/account');
 //const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { authenticateJWT } = require('../middleware/auth');
 //const JWT_SECRET = 'sneekysneekysecret';
 //const app = express.router();
 
@@ -44,7 +45,7 @@ module.exports = function routes(app, logger) {
   });
 
   // GET /dates by company
-  app.get('/dates/:company', (req, res) => {
+  app.get('/dates/:company',(req, res) => {
     if (!("company" in req.params)){
       res.status(400).send({
         success: false,
@@ -304,11 +305,6 @@ module.exports = function routes(app, logger) {
       });
     }
   });
-
-
-  
-
-
 
   // GET /employees by company
   app.get('/employee/:company', (req, res) => {
@@ -700,11 +696,6 @@ module.exports = function routes(app, logger) {
     }
   });
 
-          
-
-
-
-
   // GET /buyer_review all reviews for a particular buyer
   app.get('/buyer_reviews/:company_id', (req, res) => {
     // obtain a connection from our pool of connections
@@ -977,7 +968,7 @@ module.exports = function routes(app, logger) {
         });
       }
     });
-  });
+  }); 
 
 app.post('/shipper',  (req, res) => {
   // obtain a connection from our pool of connections
@@ -1172,8 +1163,6 @@ app.put('/shipper/:id/verify', (req, res) => {
     });
   }
 });
-
-
 
 //BELOW ARE NOT NECESSARY FOR USER STORIES  VVVV
 

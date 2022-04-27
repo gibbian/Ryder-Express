@@ -10,7 +10,6 @@ const routes = require('./routes/routes.js');
 const loginroutes = require('./routes/loginroutes.js');
 
 const {authenticateJWT} = require('./middleware/auth.js');
-const router = require('./routes/account.js');
 
 // Longest uptime 24 mins before user forced shutdown
 var connection = mysql.createPool({
