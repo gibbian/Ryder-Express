@@ -3,6 +3,7 @@ const pool = require('../db')
 // const appr = require('../models/account');
 //const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { authenticateJWT } = require('../middleware/auth');
 //const JWT_SECRET = 'sneekysneekysecret';
 //const app = express.router();
 
@@ -44,7 +45,7 @@ module.exports = function routes(app, logger) {
   });
 
   // GET /dates by company
-  app.get('/dates/:company', (req, res) => {
+  app.get('/dates/:company',(req, res) => {
     if (!("company" in req.params)){
       res.status(400).send({
         success: false,
@@ -305,11 +306,6 @@ module.exports = function routes(app, logger) {
     }
   });
 
-
-  
-
-
-
   // GET /employees by company
   app.get('/employee/:company', (req, res) => {
     // obtain a connection from our pool of connections
@@ -416,7 +412,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // GET /employees by company
+  // GET /employees by seller or buyer based on body parameter
   app.get('/delivery/:id', (req, res) => {
     // obtain a connection from our pool of connections
     if (!("id" in req.params)){
@@ -425,30 +421,63 @@ module.exports = function routes(app, logger) {
         response: "Missing required field: `id`",
       });
     }
-    else{
-      pool.getConnection(function (err, connection){
-        if(err){
-          // if there is an issue obtaining a connection, release the connection instance and log the error
-          logger.error('Problem obtaining MySQL connection',err)
-          res.status(400).send('Problem obtaining MySQL connection'); 
-        } else {
-          // if there is no issue obtaining a connection, execute query and release connection
-          connection.query('SELECT * FROM Delivery WHERE id = ?', req.params.id, function (err, rows, fields) {
-            connection.release();
-            if (err) {
-              logger.error("Error while fetching delivery: \n", err);
-              res.status(400).json({
-                "data": [],
-                "error": "Error obtaining delivery"
-              })
-            } else {
-              res.status(200).json({
-                "data": rows
-              });
-            }
-          });
-        }
+    if (!("looker_type" in req.body)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `looker_type`",
       });
+    }
+    else{
+      if (req.body.looker_type == "buyer"){
+        pool.getConnection(function (err, connection){
+          if(err){
+            // if there is an issue obtaining a connection, release the connection instance and log the error
+            logger.error('Problem obtaining MySQL connection',err)
+            res.status(400).send('Problem obtaining MySQL connection'); 
+          } else {
+            // if there is no issue obtaining a connection, execute query and release connection
+            connection.query('SELECT * FROM Delivery WHERE buyer_id = ?', req.params.id, function (err, rows, fields) {
+              connection.release();
+              if (err) {
+                logger.error("Error while fetching delivery: \n", err);
+                res.status(400).json({
+                  "data": [],
+                  "error": "Error obtaining delivery"
+                })
+              } else {
+                res.status(200).json({
+                  "data": rows
+                });
+              }
+            });
+          }
+        });
+      }
+      else if (req.body.looker_type == "seller"){
+        pool.getConnection(function (err, connection){
+          if(err){
+            // if there is an issue obtaining a connection, release the connection instance and log the error
+            logger.error('Problem obtaining MySQL connection',err)
+            res.status(400).send('Problem obtaining MySQL connection'); 
+          } else {
+            // if there is no issue obtaining a connection, execute query and release connection
+            connection.query('SELECT * FROM Delivery WHERE seller_id = ?', req.params.id, function (err, rows, fields) {
+              connection.release();
+              if (err) {
+                logger.error("Error while fetching delivery: \n", err);
+                res.status(400).json({
+                  "data": [],
+                  "error": "Error obtaining delivery"
+                })
+              } else {
+                res.status(200).json({
+                  "data": rows
+                });
+              }
+            });
+          }
+        });
+      }
     }   
   });
 
@@ -503,6 +532,40 @@ module.exports = function routes(app, logger) {
     }
   });
 
+  //Get /shipper by username
+  app.get('/shipper/:username', (req, res) => {
+    if (!("username" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `username`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection');
+        } else {
+          connection.query('SELECT * FROM Shipper WHERE username = ?', req.params.username, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching shipper: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining shipper"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+
   // GET /shipper
   app.get('/shipper', (req, res) => {
     // obtain a connection from our pool of connections
@@ -531,7 +594,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  // GET /employees by company
+  // GET /shipper by id
   app.get('/shipper/:id', (req, res) => {
     // obtain a connection from our pool of connections
     if (!("id" in req.params)){
@@ -594,6 +657,41 @@ module.exports = function routes(app, logger) {
       }
     });
   });
+
+  // Get /customer by username
+  app.get('/customer/:username', (req, res) => {
+    if (!("username" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `username`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection');
+        } else {
+          connection.query('SELECT * FROM Customer WHERE username = ?', req.params.username, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching customer: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining customer"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
+
   //GET /customer_id by name
   app.get('/customer/:name', (req, res) => {
     // obtain a connection from our pool of connections
@@ -666,11 +764,6 @@ module.exports = function routes(app, logger) {
       });
     }
   });
-
-          
-
-
-
 
   // GET /buyer_review all reviews for a particular buyer
   app.get('/buyer_reviews/:company_id', (req, res) => {
@@ -944,7 +1037,7 @@ module.exports = function routes(app, logger) {
         });
       }
     });
-  });
+  }); 
 
 app.post('/shipper',  (req, res) => {
   // obtain a connection from our pool of connections
@@ -1105,12 +1198,40 @@ app.put('/shipper/:username', (req, res) => {
     });
   }
 });
-
-
-
-
-
-
+//Mark a shipper for is_verified
+app.put('/shipper/:id/verify', (req, res) => {
+  if (!("id" in req.params)){
+    res.status(400).send({
+      success: false,
+      response: "Missing required field: `id`",
+    });
+  }
+  else{
+    pool.getConnection(function (err, connection){
+      if(err){
+        logger.error('Problem obtaining MySQL connection',err)
+        res.status(400).send('Problem obtaining MySQL connection');
+      } else {
+        //if the shipper has over 50 num_deliveries, they are verified
+        connection.query('UPDATE Shipper SET is_verified = 1 WHERE id = ? AND num_deliveries >= 50', [req.params.id], function (err, rows, fields) {
+          connection.release();
+          if (err) {
+            logger.error("Error while updating shipper: \n", err);
+            res.status(400).json({
+              "data": [],
+              "error": "Error updating shipper"
+            })
+          } else {
+            res.status(200).json({
+              "data": rows
+            });
+            console.log(req.params.username + " is now verified");
+          }
+        });
+      };
+    });
+  }
+});
 
 //BELOW ARE NOT NECESSARY FOR USER STORIES  VVVV
 
@@ -1148,7 +1269,3 @@ app.delete('/customer/:username', (req, res) => {
   }
 });
 }
-
-
-
-

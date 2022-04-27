@@ -9,9 +9,18 @@ SELECT * FROM Buyer_Reviews;
 ALTER TABLE Buyer_Reviews ADD COLUMN review_rating INTEGER DEFAULT 0;
 
 SELECT * FROM Customer;
-INSERT INTO Customer (id, name, email, phone)
+INSERT INTO Customer (id, name, email, phone, username, password)
 VALUES
-(1, 'Timothy Turner', 'ttturner42@gmail.com', '972-943-9506');
+(1, 'Timothy Turner', 'ttturner42@gmail.com', '972-943-9506', 'timmyT', 'cosmo');
+
+
+
+UPDATE Shipper SET username = 'ElitesWC', password = 'blueberry' WHERE id =3;
+
+
+ DELETE FROM Shipper WHERE username = 'BigShipping';
+
+DELETE FROM Shipper WHERE username = 'DallasSC';
 
 SELECT id FROM Shipper WHERE name = 'Dallas Shipping Co';
 
@@ -36,7 +45,7 @@ VALUES
 (TRUE, FALSE, CURRENT_DATE + 4, 3);
 
 INSERT INTO Delivery (destination, origin_loc, product_name, product_desc, product_picture, delivered_picture, left_warehouse, left_warehouse_date, is_delivered, flagged_for_return, is_return, date_received, buyer_id, seller_id, employee_id)
-VALUES('2721 Black Sage Dr.', 'Northeast', 'Uranium 2', 'This is also used for a nuclear reactor', 'https://imgur.com/cFm57rl', '', false, CURRENT_DATE, false, false, false, CURRENT_DATE + 3, 1, 1, 61);
+VALUES('2721 Black Sage Dr.', 'Northeast', 'Uranium 2', 'This is also used for a nuclear reactor', 'https://imgur.com/cFm57rl', '', false, CURRENT_DATE, false, false, false, CURRENT_DATE + 3, 1, 2, 61);
 
 SELECT * FROM Delivery;
 

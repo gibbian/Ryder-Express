@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-export const ProductPage = (props) =>{
+export const Profile = (props) =>{
     return <>
-    <h1>ProductPage</h1>
+    <h1>Profile</h1>
     </>
 }
