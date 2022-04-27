@@ -13,7 +13,7 @@ app.post('/customer/login', (req, res) => {
       if(err){
         // if there is an issue obtaining a connection, release the connection instance and log the error
         logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection'); 
+        res.status(400).send('Problem obtaining MySQL connection');
       } else {
         connection.query('SELECT * FROM Customer WHERE username = ?', req.body.username, function (err, rows, fields) {
           connection.release();
@@ -105,7 +105,7 @@ app.get('/customer/login', (req, res) => {
                         "error": "Incorrect password"
                     })  //if the password is incorrect
                 }
-            } 
+            }
             }
         });
         }
@@ -124,7 +124,7 @@ app.get('/customer/login', (req, res) => {
       if(err){
         // if there is an issue obtaining a connection, release the connection instance and log the error
         logger.error('Problem obtaining MySQL connection',err)
-        res.status(400).send('Problem obtaining MySQL connection'); 
+        res.status(400).send('Problem obtaining MySQL connection');
       } else {
         connection.query('SELECT * FROM Shipper WHERE username = ?', req.body.username, function (err, rows, fields) {
           connection.release();
@@ -166,7 +166,6 @@ app.get('/customer/login', (req, res) => {
       }
     });
   });
-
 
 //Get Shipper Session
 ///Login shipper returns session token
@@ -219,7 +218,9 @@ app.get('/shipper/login', (req, res) => {
     });
 });
 
+
 }
+
 //
 
 
