@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export const ProductPage = () =>{
+export const ProductPage = (props) =>{
     return <>
     <h1>ProductPage</h1>
     </>
