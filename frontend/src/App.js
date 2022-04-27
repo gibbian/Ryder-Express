@@ -5,7 +5,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 import {Home} from './components/Home';
 import {ProductPage} from './components/ProductPage';
-import {Profile} from './components/Profile';
+import Profile from './components/Profile';
 import {SignIn} from './components/SignIn';
 import {SignUp} from './components/SignUp';
 import {UserDashboard} from './components/UserDashboard/UserDashboard';
