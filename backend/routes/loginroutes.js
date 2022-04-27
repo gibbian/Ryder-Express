@@ -166,7 +166,7 @@ app.get('/customer/login', (req, res) => {
       }
     });
   });
-}
+
 
 //Get Shipper Session
 ///Login shipper returns session token
@@ -218,6 +218,8 @@ app.get('/shipper/login', (req, res) => {
       }
     });
 });
+
+}
 //
 
 
