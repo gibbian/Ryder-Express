@@ -11,28 +11,80 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import longLogo from '../assets/images/long-RyderExpress.svg';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { handleChange } from "react";
 import { useState } from "react";
 import { apiCalls } from '../common/apiCalls';
+import { InputLabel } from '@mui/material';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 
 const theme = createTheme();
 
-export const SignUp = () => {
+export const SignUp = (props) => {
   const [isShipper, setIsShipper] = useState(false);
+  const [region, setRegion] = useState('');
   const apiCall = new apiCalls();
+  const navigate = useNavigate();
+
+  const handelRegion = (event) => {
+    setRegion(event.target.value);
+  }
+
+  function validateFormInfo(data) {
+    if (data.get('name').length <= 0) {
+      alert("Please enter a name");
+      return false;
+    }
+    if (data.get('email').length <= 0) {
+      alert("Please enter an email");
+      return false;
+    }
+    if (data.get('phone').length != 10) {
+      alert("Please enter a valid phone number");
+      return false;
+    }
+    if (data.get('username').length < 4) {
+      alert("Please enter a username with at least 4 characters");
+      return false;
+    }
+    if (data.get('password').length <= 0) {
+      alert("Please enter a password");
+      return false;
+    }
+    if (isShipper) {
+      if (region == '') {
+        alert("Please choose a region");
+        return false;
+      }
+      if (parseInt(data.get('shipping-rate')) <= 0 || isNaN(parseInt(data.get('shipping-rate')))) {
+        alert("Please enter a valid shipping rate");
+        return false;
+      }
+      if (parseInt(data.get('fleet-size')) <= 0 || isNaN(parseInt(data.get('fleet-size')))) {
+        alert("Please enter a valid fleet size");
+        return false;
+      }
+    }
+    return true;
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    if(isShipper){
-      console.log(typeof(data.get('shipping-rate')));
-      //apiCall.shipperRegister(data.get('name'), data.get('email'), data.get('phone'), data.get('region'), parseInt(data.get('shipping-rate')), parseInt(data.get('fleet-size')), data.get('username'), data.get('password'));
-    }
-    else{
-      apiCall.buyerRegister(data.get('name'), data.get('email'), data.get('phone'), data.get('username'), data.get('password'));
+    if (validateFormInfo(data)) {
+      if (isShipper) {
+        apiCall.shipperRegister(data.get('name'), data.get('email'), data.get('phone'), data.get('region'), parseInt(data.get('shipping-rate')), parseInt(data.get('fleet-size')), data.get('username'), data.get('password'));
+        navigate('/SignIn');
+      }
+      else {
+        apiCall.buyerRegister(data.get('name'), data.get('email'), data.get('phone'), data.get('username'), data.get('password'));
+        navigate('/SignIn');
+      }
     }
   };
 
@@ -74,19 +126,24 @@ export const SignUp = () => {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  type="email"
                 />
               </Grid>
               <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="phone"
-                    label="Phone Number"
-                    type="number"
-                    id="phone-number"
-                    autoComplete="phone number"
-                  />
-                </Grid>
+                <TextField
+                  required
+                  fullWidth
+                  name="phone"
+                  label="Phone Number"
+                  type="number"
+                  id="phone-number"
+                  autoComplete="phone number"
+                  onInput={(e) => {
+                    e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 10)
+                    console.log(e.target.value.length)
+                  }}
+                />
+              </Grid>
               <Grid item xs={12}>
                 <TextField
                   autoComplete="username"
@@ -96,6 +153,7 @@ export const SignUp = () => {
                   id="username"
                   label="Username"
                   autoFocus
+
                 />
               </Grid>
               <Grid item xs={12}>
@@ -119,21 +177,31 @@ export const SignUp = () => {
             {isShipper && (
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="region"
-                    label="Region"
-                    type="region"
-                    id="region"
-                    autoComplete="region"
-                  />
+                  <FormControl fullWidth>
+                    <InputLabel id='region-select-label'>Region</InputLabel>
+                    <Select
+                      required
+                      labelId='region-select-label'
+                      id="region"
+                      value={region}
+                      label="Region"
+                      onChange={handelRegion}
+                    >
+                      <MenuItem value={'Northwest'}>Northwest</MenuItem>
+                      <MenuItem value={'West'}>West</MenuItem>
+                      <MenuItem value={'Southwest'}>Southwest</MenuItem>
+                      <MenuItem value={'Midwest'}>Midwest</MenuItem>
+                      <MenuItem value={'Southeast'}>Southeast</MenuItem>
+                      <MenuItem value={'Mid Atlantic'}>Mid Atlantic</MenuItem>
+                      <MenuItem value={'Northeast'}>Northeast</MenuItem>
+                    </Select>
+                  </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
-                    name="shippng-rate"
+                    name="shipping-rate"
                     label="Shipping Rate (Dollars per day)"
                     type="number"
                     id="shipping-rate"

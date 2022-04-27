@@ -58,7 +58,7 @@ export const BasicMenu = ({userName}) => {
     );
   }
 
-export const UserDashboard = () =>{
+export const UserDashboard = (props) =>{
     const [ userName, setUserName ] = useState('John Doe');
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);

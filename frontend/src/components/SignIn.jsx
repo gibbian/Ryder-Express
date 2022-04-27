@@ -24,7 +24,7 @@ const fetchBase = () => {
 
 const theme = createTheme();
 
-export const SignIn = () => {
+export const SignIn = (props) => {
   const [isShipper, setIsShipper] = useState(false);
   const apiCall = new apiCalls();
   const navigate = useNavigate();
@@ -38,8 +38,7 @@ export const SignIn = () => {
           apiCall.getShipperToken().then((res) => {
             console.log("Result: ");
             console.log(res);
-            sessionStorage.setItem('username', res.data.username);
-            sessionStorage.setItem('password', res.data.password);
+            sessionStorage.setItem('token', res.data.data[0].token);
           })
             .catch((err) => {
               console.log("Error: ");
@@ -57,8 +56,7 @@ export const SignIn = () => {
           apiCall.getCustomerToken().then((res) => {
             console.log("Result: ");
             console.log(res);
-            sessionStorage.setItem('username', res.data.username);
-            sessionStorage.setItem('password', res.data.password);
+            sessionStorage.setItem('token', res.data.data[0].token);
           })
             .catch((err) => {
               console.log("Error: ");
@@ -120,7 +118,7 @@ export const SignIn = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              justifyContent="space-around"
+              //justifyContent="space-around"
             >
               Sign In
             </Button>

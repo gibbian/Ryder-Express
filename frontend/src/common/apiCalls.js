@@ -8,7 +8,7 @@ export class apiCalls {
                 headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
             })
                 .then(res => {
-                    console.log('Responce: ');
+                    console.log('response: ');
                     resolve(res);
                 })
                 .catch(err => {
@@ -28,7 +28,7 @@ export class apiCalls {
                 headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
             })
                 .then(res => {
-                    console.log('Responce: ');
+                    console.log('response: ');
                     resolve(res);
                 })
                 .catch(err => {
@@ -45,11 +45,11 @@ export class apiCalls {
     shipperLogin(username, password) {
         return new Promise((resolve, reject) => {
             axios.post(`${apiEndpoint}/shipper/login`, {username: username, password: password})
-            .then(responce => {
-                console.log('Responce: ');
-                console.log(responce);
-                sessionStorage.setItem('token', responce.data);
-                resolve(responce);
+            .then(response => {
+                console.log('Response: ');
+                console.log(response);
+                sessionStorage.setItem('token', response.data.data[0].token);
+                resolve(response);
             })
             .catch(err => {
                 console.log('Error: ');
@@ -65,11 +65,11 @@ export class apiCalls {
     customerLogin(username, password) {
         return new Promise((resolve, reject) => {
             axios.post(`${apiEndpoint}/customer/login`, {username: username, password: password})
-            .then(responce => {
-                console.log('Responce: ');
-                console.log(responce);
-                sessionStorage.setItem('token', responce.data);
-                resolve(responce);
+            .then(response => {
+                console.log('Response: ');
+                console.log(response);
+                sessionStorage.setItem('token', response.data.data[0].token);
+                resolve(response);
             })
             .catch(err => {
                 console.log('Error: ');
@@ -90,8 +90,8 @@ export class apiCalls {
                 email: email,
                 phone: phone,
                 region: region,
-                shippingRate: shippingRate,
-                fleetSize: fleetSize,
+                shipping_rates: shippingRate,
+                fleet_size: fleetSize,
                 username: username,
                 password: password
 
