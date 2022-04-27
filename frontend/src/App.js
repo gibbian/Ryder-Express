@@ -89,7 +89,7 @@ function App () {
             <Route exact path="/ProductPage" element={<ProductPage token={token}/>}/>
             <Route exact path="/Profile" element={<Profile token={token}/>}/>
             <Route exact path="/SignUp" element={<SignUp setToken={setToken}/>}/>
-            <Route exact path="/home" element={<Home token={token}/>}/>
+            <Route exact path="/Home" element={<Home token={token}/>}/>
           </Routes>
         </div>
       </div>      
