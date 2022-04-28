@@ -274,4 +274,46 @@ export class apiCalls {
         })
     }
 
+    getShipperAvailable(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/dates/${id}}/true`)
+                .then(res => {
+                    console.log('Response: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
+    makeDelivery(buyer_id, seller_id, employee_id, origin_loc, destination, product_name,date_received) {  
+        return new Promise((resolve, reject) => {
+            axios.post(`${apiEndpoint}/delivery`, {
+                buyer_id: buyer_id,
+                seller_id: seller_id,
+                employee_id: employee_id,
+                origin_loc: origin_loc,
+                destination: destination,
+                product_name: product_name,
+                date_received: date_received,
+
+            })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
 }

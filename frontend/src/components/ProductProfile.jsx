@@ -21,24 +21,25 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { apiCalls } from '../../common/apiCalls';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import { apiCalls } from '../common/apiCalls';
 import { useEffect, useState } from "react";
 import { async } from 'q';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { Card } from '@mui/material';
+import { ReviewCard } from "./ReviewCard";
 
 const theme = createTheme();
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-
-
-
 export const BasicMenu = ({ userName }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  
+
   const navigate = useNavigate();
+  const apiCalls = new apiCalls();
   const open = Boolean(anchorEl);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -50,6 +51,11 @@ export const BasicMenu = ({ userName }) => {
     sessionStorage.clear();
     navigate('/');
 
+  }
+  const handleProfile = () => {
+    console.log("logout");
+    sessionStorage.clear();
+    navigate('/');
   }
 
   return (
@@ -76,37 +82,30 @@ export const BasicMenu = ({ userName }) => {
         }}
       >
         <MenuItem onClick={handleClose}>Home</MenuItem>
+        <MenuItem onClick={handleProfile}>Profile</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );
 }
 
-export const UserDashboard = (props) => {
+export const ProductProfile = (props) => {
 
   const apiCall = new apiCalls();
+  const [reviews, setReviews] = useState([]);
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [deliveries, setDeliveries] = useState([]);
   const [name, setName] = useState('');
   const [id, setId] = useState(0);
 
-  async function getUserDetails() {
-    const currentUser = await apiCall.getCustomerByUsername(sessionStorage.getItem('username'));
-    setName(currentUser.data.data[0].name);
-    setId(currentUser.data.data[0].id);
-  }
 
   useEffect(() => {
-    getUserDetails();
-    apiCall.getDeliveries(id).then(res => {
-      const orders = res.data.data
-      setDeliveries(orders);
-    });
-  }, [id]);
-
-  window.onload = getUserDetails;
+    const shipperID = sessionStorage.getItem("companyID");
+    apiCall.getReviews(shipperID).then(res => {
+      setReviews(res.data.data);
+    })
+  }, []);
 
 
   const open = Boolean(anchorEl);
@@ -126,7 +125,20 @@ export const UserDashboard = (props) => {
     console.log("logout");
     sessionStorage.clear();
     navigate('/');
-
+  }
+  const handleProfile = () => {
+    console.log("logout");
+    sessionStorage.clear();
+    navigate('/');
+  }
+  const handleSubmitReivew = () => {
+    console.log("reviewSubmit");
+    sessionStorage.clear();
+    navigate('/');
+  }
+  const handleMakeOrder = () => {
+    console.log("makeOrder");
+    navigate('/Checkout');
   }
 
   function getStatus(prop) {
@@ -147,7 +159,7 @@ export const UserDashboard = (props) => {
 
   function getDeliveryDate(prop) {
     const date = new Date(prop.date_received);
-    return date.getMonth().toString() + '/' + date.toLocaleDateString();
+    return date.getMonth().toString() + '/' + date.getDate().toString();
   }
 
   return (
@@ -163,7 +175,6 @@ export const UserDashboard = (props) => {
           >
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 2 }}>
-            Orders
           </Typography>
           <Typography>
             <Button
@@ -188,39 +199,93 @@ export const UserDashboard = (props) => {
               }}
             >
               <MenuItem onClick={handleHome}>Home Page</MenuItem>
+              <MenuItem onClick={handleProfile}>Profile</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Typography>
         </Box>
       </AppBar>
-      <CssBaseline />
-      <Box sx={{ m: 5 }}>
-        <TableContainer component={Paper} >
-          <Table aria-label="simple table" >
-            <TableHead>
-              <TableRow>
-                <TableCell align="center"></TableCell>
-                <TableCell align="center">Product Name</TableCell>
-                <TableCell align="center">Status</TableCell>
-                <TableCell align="center">Expected Delivery</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {deliveries.map((order) => (
-                <TableRow
-                  key={order.name}
-                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                >
-                  <TableCell align="center" key="productImage"><img src={order.product_picture} width="25%"/></TableCell>
-                  <TableCell align="center" key="productName">{order.product_name}</TableCell>
-                  <TableCell align="center" key="orderStatus">{getStatus(order)}</TableCell>
-                  <TableCell align="center" key="deliveryDate">{getDeliveryDate(order)}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+      <Box sx={{ width: '200%' }}>
+        <Grid container direction="row" justifyContent="space-evenly" alignContent="baseline" sx={{ width: '200%' }}>
+          <Grid container alignContent="center" sx={{ width: '100%' }} xs={12}>
+            <Grid mt={10} ml={10}>
+              <Card sx={{ width: '200%' }}>
+                <CardContent align="center" >
+                  <Grid container direction="column" justifyContent="space-between" mr={10} >
+                    <Grid mb={2} bl={10} br={10}>
+                      <Typography variant="h4" component="h2">
+                        Company Name
+                      </Typography>
+                    </Grid>
+                    <Grid mb={2}>
+                      <Grid container direction="row" justifyContent="space-evenly">
+                        <Grid direction="column">
+                          <Typography variant="h6" component="h2">
+                            <u>Shipping Rate</u>
+                          </Typography>
+                          <Typography variant="h6" component="h2">
+                            $5.00 per day
+                          </Typography>
+                        </Grid>
+
+                        <Grid direction="column">
+                          <Typography variant="h6" component="h2">
+                            <u>Fleet Size</u>
+                          </Typography>
+                          <Typography variant="h6" component="h2">
+                            10 Trucks
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid mt={5}>
+                      <Typography variant="h6" component="h2">
+                        <u>Contact</u>
+                      </Typography>
+                      <Typography variant="h6" component="h2">
+                        Email
+                      </Typography>
+                      <Typography variant="h6" component="h2">
+                        Phone Number
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </CardContent>
+              </Card>
+              <Button variant="contained" sx={{ width: '200%' }} onClick={handleMakeOrder}>
+                Start your order!
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
       </Box>
+      <Box m={5}>
+        <Card sx={{ width: '100%' }}>
+          <CardContent align="center" >
+            <Typography component="h1" variant="h5">
+              Submit a Review!
+            </Typography>
+            <Grid container component="form" onSubmit={handleSubmitReivew} direction="column">
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+              />
+            </Grid>
+          </CardContent>
+        </Card>
+        {reviews.map(review => (
+          <Grid item key={review.id} xs={12} sm={8} md={6} align="center">
+            <ReviewCard card={review}></ReviewCard>
+          </Grid>
+        ))}
+      </Box>
+      <CssBaseline />
     </ThemeProvider>
   );
 }

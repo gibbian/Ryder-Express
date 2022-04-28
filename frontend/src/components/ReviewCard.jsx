@@ -6,25 +6,10 @@ import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 
-export const ProductCard = ({ card }) => {
 
-  const navigate = useNavigate();
+export const ReviewCard = ({ card }) => {
 
-  // const toProfile = () => {
-  //   navigate("/userDashboard", { state: { id: 1} });
-  // };
-
-  // const Profile = () => {
-  //   const location = useLocation();
-  // }
-
-  const toProfile = (user) => {
-    console.log(user.id);
-    sessionStorage.setItem('companyID', user.id);
-    navigate('/ProductPage');
-  };
-    
-
+  
     return (
       <Card sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flexGrow: 30 }}>
@@ -32,23 +17,14 @@ export const ProductCard = ({ card }) => {
             {card.name}
           </Typography>
           <Typography>
-            Email:{" "}
-            {card.email}
+            Name:{" "} {card.email}
           </Typography>
           <Typography>
-            Phone Number:{" "}
-            {card.phone}
+            Phone Number:{" "} {card.rating}
           </Typography>
           <Typography>
-            Region:{" "}
-            {card.region}
+            Region:{" "} {card.review}
           </Typography>
-          <Typography>
-            {card.bio}
-          </Typography>
-          <Button size="large" variant="contained" onClick={() => toProfile(card)}>
-            Profile
-          </Button>
         </CardContent>
       </Card>
     );
