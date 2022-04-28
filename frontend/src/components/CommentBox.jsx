@@ -37,8 +37,9 @@ export default function CommentBox() {
   };
 
   return (
-    <div className="container">
-      <form
+    <div className="container" id="comment_box">
+      
+      <form id="comment_box"
         onSubmit={onSubmit}
         ref={containerRef}
         className={cn("comment-box", {
@@ -50,17 +51,19 @@ export default function CommentBox() {
           minHeight: isExpanded ? outerHeight.current : INITIAL_HEIGHT
         }}
       >
-        <div className="header">
-          <div className="user">
+        <div className="header" id="comment_box">
+          <div className="user" id="comment_box">
             <img
               src="https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/df/df7789f313571604c0e4fb82154f7ee93d9989c6.jpg"
               alt="User avatar"
+              id="comment_box"
             />
-            <span>User Name</span>
+            <span id="comment_box" >User Name</span>
           </div>
         </div>
-        <label htmlFor="comment">What are your thoughts?</label>
+        <label htmlFor="comment" id="comment_box">What are your thoughts?</label>
         <textarea
+        
           ref={textRef}
           onClick={onExpand}
           onFocus={onExpand}
@@ -69,13 +72,13 @@ export default function CommentBox() {
           placeholder="Make a review for the company."
           value={commentValue}
           name="comment"
-          id="comment"
+          id="comment comment_box"
         />
-        <div className="actions">
-          <button type="button" className="cancel" onClick={onClose}>
+        <div className="actions" id="comment_box">
+          <button type="button" className="cancel" onClick={onClose} id="comment_box">
             Cancel
           </button>
-          <button type="submit" disabled={commentValue.length < 1}>
+          <button type="submit" disabled={commentValue.length < 1} id="comment_box">
             Respond
           </button>
         </div>

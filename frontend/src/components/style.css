@@ -1,4 +1,4 @@
-:root {
+#comment_box :root {
     --black: #333;
     --white: #fff;
     --gray: #aaa;
@@ -8,46 +8,46 @@
     --font-family: Arial, Helvetica, sans-serif;
   }
   
-  * {
+  #comment_box * {
     box-sizing: border-box;
   }
   
-  body {
+  #comment_box body {
     font-family: var(--font-family);
   }
   
-  textarea {
+  #comment_box textarea {
     font-family: var(--font-family);
     border: none;
     resize: none;
   }
   
-  textarea::placeholder {
+  #comment_box textarea::placeholder {
     color: var(--gray);
   }
   
-  label {
+  #comment_box label {
     height: 0;
     width: 0;
     visibility: hidden;
   }
   
-  button {
+  #comment_box button {
     cursor: pointer;
   }
   
-  button:disabled {
+  #comment_box button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
   
-  button[type="submit"] {
+  #comment_box button[type="submit"] {
     background: var(--green);
     color: var(--white);
     border-radius: var(--border-radius);
   }
   
-  .comment-box {
+  #comment_box .comment-box {
     display: flex;
     flex-wrap: wrap;
     max-width: 400px;
@@ -61,24 +61,24 @@
     max-height: 46px;
   }
   
-  .header {
+  #comment_box .header {
     transition: opacity var(--transition) 0.2s;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-40px);
   }
   
-  .user {
+  #comment_box .user {
     display: flex;
     align-items: center;
   }
   
-  .user img {
+  #comment_box .user img {
     border-radius: 20px;
     margin-right: 10px;
   }
   
-  .comment-field {
+  #comment_box .comment-field {
     color: var(--black);
     transition: transform var(--transition);
     font-size: 18px;
@@ -90,17 +90,17 @@
     line-height: 1;
   }
   
-  .comment-box.expanded .comment-field {
+  #comment_box .comment-box.expanded .comment-field {
     transform: translateY(40px);
   }
   
-  .comment-box.expanded .header {
+  #comment_box .comment-box.expanded .header {
     transform: translateY(10px);
     opacity: 1;
     visibility: visible;
   }
   
-  .actions {
+  #comment_box .actions {
     width: 100%;
     display: flex;
     align-self: flex-end;
@@ -110,11 +110,11 @@
     transition: opacity var(--transition) 0.2s;
   }
   
-  .comment-box.expanded .actions {
+  #comment_box .comment-box.expanded .actions {
     opacity: 1;
   }
   
-  .actions button {
+  #comment_box .actions button {
     margin-left: 6px;
     font-size: 14px;
     padding: 12px;
@@ -122,10 +122,10 @@
     line-height: 1;
   }
   
-  .actions .cancel {
+  #comment_box .actions .cancel {
     background: none;
   }
   
-  .comment-box.modified {
+  #comment_box .comment-box.modified {
     max-height: unset;
   }

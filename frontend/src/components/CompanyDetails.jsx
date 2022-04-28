@@ -26,7 +26,7 @@ export default function CompanyDetails() {
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         Fleet Size: 
       </Typography>
-      <div>
+      <div id="comment_box">
         <Link color="primary" href="#" onClick={preventDefault}>
           View Details
         </Link>

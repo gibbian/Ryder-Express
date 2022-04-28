@@ -196,11 +196,11 @@ function DashboardContent() {
                                         height: 240,
                                     }}
                                 >
-                                    <h5 style={{ margin: 0, textAlign: "left" }}>Michel</h5>
-                                    <p style={{ textAlign: "left" }}>
+                                    <h5  id="comment_box" style={{ margin: 0, textAlign: "left" }}>Michel</h5>
+                                    <p  id="comment_box" style={{ textAlign: "left" }}>
                                         The comment content!!! {" "}
                                     </p>
-                                    <p style={{ textAlign: "left", color: "gray" }}>
+                                    <p  id="comment_box" style={{ textAlign: "left", color: "gray" }}>
                                         posted 1 minute ago
                                     </p>
                                 </Paper>
