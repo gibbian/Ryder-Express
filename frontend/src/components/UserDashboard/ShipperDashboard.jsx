@@ -208,10 +208,10 @@ export const ShipperDashboard = (props) => {
           <Table  aria-label="simple table" >
             <TableHead>
               <TableRow>
-                <TableCell align="right">Product</TableCell>
-                <TableCell align="right">Destination</TableCell>
-                <TableCell align="right">Status</TableCell>
-                <TableCell align="right">Expected Delivery</TableCell>
+                <TableCell align="center">Product</TableCell>
+                <TableCell align="center">Destination</TableCell>
+                <TableCell align="center">Status</TableCell>
+                <TableCell align="center">Expected Delivery</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -220,10 +220,10 @@ export const ShipperDashboard = (props) => {
                   key={order.name}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell align="right" key="productName">{order.product_name}</TableCell>
-                  <TableCell align="right" key="destination">{order.destination}</TableCell>
-                  <TableCell align="right" key="status">{getStatus(order)}</TableCell>
-                  <TableCell align="right" key="expectedDelivery">{getDeliveryDate(order)}</TableCell>
+                  <TableCell align="center" key="productName">{order.product_name}</TableCell>
+                  <TableCell align="center" key="destination">{order.destination}</TableCell>
+                  <TableCell align="center" key="status">{getStatus(order)}</TableCell>
+                  <TableCell align="center" key="expectedDelivery">{getDeliveryDate(order)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
