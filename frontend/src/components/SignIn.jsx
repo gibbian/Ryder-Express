@@ -30,17 +30,6 @@ export const SignIn = (props) => {
     if (isShipper) {
       apiCall.shipperLogin(data.get('username'), data.get('password')).then((res) => {
         if (res.status <= 201) {
-          apiCall.getShipperToken().then((res) => {
-            console.log("Result: ");
-            console.log(res);
-            sessionStorage.setItem('token', res.data.data[0].token);
-            sessionStorage.setItem('username', data.get('username'));
-            sessionStorage.setItem('isShipper', isShipper);
-          })
-            .catch((err) => {
-              console.log("Error: ");
-              console.log(err);
-            });
           navigate('/home');
         }
       }).catch((err2) => {
@@ -50,21 +39,6 @@ export const SignIn = (props) => {
     else {
       apiCall.customerLogin(data.get('username'), data.get('password')).then((res) => {
         if (res.status <= 201) {
-          apiCall.getCustomerToken().then((res) => {
-            console.log("Result: ");
-            console.log(res);
-            sessionStorage.setItem('token', res.data.data[0].token);
-            sessionStorage.setItem('username', data.get('username'));
-            sessionStorage.setItem('isShipper', isShipper);
-            console.log("Test");
-            console.log(sessionStorage.getItem('username'));
-            console.log(sessionStorage.getItem('isShipper'));
-            debugger;
-          })
-            .catch((err) => {
-              console.log("Error: ");
-              console.log(err);
-            });
           navigate('/home');
         }
       }).catch((err2) => {

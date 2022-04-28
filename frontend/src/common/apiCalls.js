@@ -2,45 +2,45 @@ import axios from 'axios';
 import { apiEndpoint, apiConfig } from './apiConfig';
 
 export class apiCalls {
-    getShipperToken() {
-        return new Promise((resolve, reject) => {
-            axios.get(`${apiEndpoint}/shipper/login`, {
-                headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
-            })
-                .then(res => {
-                    console.log('response: ');
-                    resolve(res);
-                })
-                .catch(err => {
-                    console.log('Error: ');
-                    reject(err);
-                })
-                .finally(() => {
-                    console.log("We're in");
-                });
-        }
-        )
-    }
+    // getShipperToken() {
+    //     return new Promise((resolve, reject) => {
+    //         axios.get(`${apiEndpoint}/shipper/login`, {
+    //             headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+    //         })
+    //             .then(res => {
+    //                 console.log('response: ');
+    //                 resolve(res);
+    //             })
+    //             .catch(err => {
+    //                 console.log('Error: ');
+    //                 reject(err);
+    //             })
+    //             .finally(() => {
+    //                 console.log("We're in");
+    //             });
+    //     }
+    //     )
+    // }
 
-    getCustomerToken() {
-        return new Promise((resolve, reject) => {
-            axios.get(`${apiEndpoint}/customer/login`, {
-                headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
-            })
-                .then(res => {
-                    console.log('response: ');
-                    resolve(res);
-                })
-                .catch(err => {
-                    console.log('Error: ');
-                    reject(err);
-                })
-                .finally(() => {
-                    console.log("We're in");
-                });
-        }
-        )
-    }
+    // getCustomerToken() {
+    //     return new Promise((resolve, reject) => {
+    //         axios.get(`${apiEndpoint}/customer/login`, {
+    //             headers: { Authorization: `Bearer ${sessionStorage.getItem('token')}` }
+    //         })
+    //             .then(res => {
+    //                 console.log('response: ');
+    //                 resolve(res);
+    //             })
+    //             .catch(err => {
+    //                 console.log('Error: ');
+    //                 reject(err);
+    //             })
+    //             .finally(() => {
+    //                 console.log("We're in");
+    //             });
+    //     }
+    //     )
+    // }
 
     shipperLogin(username, password) {
         return new Promise((resolve, reject) => {
@@ -49,6 +49,8 @@ export class apiCalls {
                     console.log('Response: ');
                     console.log(response);
                     sessionStorage.setItem('token', response.data.data[0].token);
+                    sessionStorage.setItem('username', username);
+                    sessionStorage.setItem('isShipper', true);
                     resolve(response);
                 })
                 .catch(err => {
@@ -69,6 +71,8 @@ export class apiCalls {
                     console.log('Response: ');
                     console.log(response);
                     sessionStorage.setItem('token', response.data.data[0].token);
+                    sessionStorage.setItem('username', username);
+                    sessionStorage.setItem('isShipper', true);
                     resolve(response);
                 })
                 .catch(err => {

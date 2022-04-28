@@ -36,7 +36,7 @@ export const CompanyDetails = ({ companyDetails }) => {
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         Fleet Size: {companyDetails.fleet_size}
       </Typography>
-      <div>
+      <div id="comment_box">
         <Link color="primary" href="#" onClick={preventDefault}>
           View Details
         </Link>
