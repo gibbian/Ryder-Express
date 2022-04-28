@@ -135,6 +135,10 @@ export const ProductProfile = (props) => {
     sessionStorage.clear();
     navigate('/');
   }
+  const handleMakeOrder = () => {
+    console.log("makeOrder");
+    navigate('/Checkout');
+  }
 
   function getStatus(prop) {
     if (prop.is_delivered) {
@@ -263,7 +267,7 @@ export const ProductProfile = (props) => {
                   </Grid>
                 </CardContent>
               </Card>
-              <Button variant="contained" sx={{ width: '200%' }} >
+              <Button variant="contained" sx={{ width: '200%' }} onClick={handleMakeOrder}>
                 Start your order!
               </Button>
             </Grid>

@@ -14,7 +14,7 @@
 # production
 /build
 
-RyderExpressDB.sql 
+.sql
 
 # misc
 .DS_Store
