@@ -66,14 +66,14 @@ export const Home = () => {
     if (sessionStorage.getItem('isShipper') === 'true') {
       console.log("shipper");
       const currentUser = await apiCall.getShipperByUsername(sessionStorage.getItem('username'));
-      setName(currentUser.data.data[0].name);
-      setId(currentUser.data.data[0].id);
+      //setName(currentUser.data.data[0].name);
+      //setId(currentUser.data.data[0].id);
     }
     else {
       console.log("customer");
       const currentUser = await apiCall.getCustomerByUsername(sessionStorage.getItem('username'));
-      setName(currentUser.data.data[0].name);
-      setId(currentUser.data.data[0].id);
+      //setName(currentUser.data.data[0].name);
+      //setId(currentUser.data.data[0].id);
     }
   }
 
