@@ -123,7 +123,7 @@ export const Checkout = (props) => {
                   required
                   fullWidth
                   id="email"
-                  label="Email Address"
+                  label="Destination"
                   name="email"
                   autoComplete="email"
                   type="email"
@@ -134,7 +134,7 @@ export const Checkout = (props) => {
                   required
                   fullWidth
                   name="phone"
-                  label="Phone Number"
+                  label="Origin Region"
                   type="number"
                   id="phone-number"
                   autoComplete="phone number"
@@ -151,7 +151,7 @@ export const Checkout = (props) => {
                   required
                   fullWidth
                   id="username"
-                  label="Username"
+                  label="Destination Region"
                   autoFocus
 
                 />
@@ -161,13 +161,24 @@ export const Checkout = (props) => {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Product Description"
                   type="password"
                   id="password"
                   autoComplete="new-password"
                 />
-              </Grid>
-              <Grid item xs={12}>
+                </Grid>
+                <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Product Photo (URL)"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+                </Grid>
+            <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox checked={isShipper} color="primary" onChange={e => setIsShipper(e.target.checked)} />}
                   label="Are you a Shipper?"
