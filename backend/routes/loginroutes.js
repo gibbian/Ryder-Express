@@ -104,15 +104,15 @@ app.get('/customer/login', (req, res) => {
                         "error": null
                     })
                 } else {
+                  
                     res.status(400).json({
                         "data": [],
                         "error": "Incorrect password"
-
-                    })  //if the password is incorrect
+                  })  //if the password is incorrect
                 }
+              }
             }
-            }
-        });
+          });
         }
     });
 });
