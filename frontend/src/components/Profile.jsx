@@ -22,6 +22,8 @@ import { mainListItems } from './listItems';
 import CompanyDetails from './CompanyDetails';
 import CommentBox from "./CommentBox";
 import { apiCalls } from '../common/apiCalls';
+import { ProductCard } from './ProductCard';
+import { UserDashboard } from './UserDashboard/UserDashboard';
 
 function Copyright(props) {
     return (
@@ -100,6 +102,8 @@ function DashboardContent() {
         setOpen(!open);
     };
 
+    const userid = sessionStorage.getItem("id");
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -129,6 +133,7 @@ function DashboardContent() {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
+                            {userid}
                             Company Profile
                         </Typography>
                         <IconButton color="inherit">
@@ -200,6 +205,7 @@ function DashboardContent() {
                                     <p  id="comment_box" style={{ textAlign: "left" }}>
                                         The comment content!!! {" "}
                                     </p>
+                                    {console.log(userid)}
                                     <p  id="comment_box" style={{ textAlign: "left", color: "gray" }}>
                                         posted 1 minute ago
                                     </p>
