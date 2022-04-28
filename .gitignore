@@ -8,3 +8,5 @@ frontend/node_modules/
 
 # dependencies
 /node_modules
+
+.env
