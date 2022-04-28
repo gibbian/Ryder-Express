@@ -160,6 +160,25 @@ export class apiCalls {
         })
     }
 
+    getOutgoingDeliveries(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/delivery/seller/${id}}`)
+                .then(res => {
+                    console.log('Response: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch deliveries: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
     getReviews(id) {
         return new Promise((resolve, reject) => {
             axios.get(`${apiEndpoint}/shipper_reviews/${id}}`)
@@ -182,6 +201,25 @@ export class apiCalls {
     getCustomerByUsername(username) {
         return new Promise((resolve, reject) => {
             axios.get(`${apiEndpoint}/customer/${username}`)
+                .then(res => {
+                    console.log('Found User: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
+    getShipperByUsername(username) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/shipper/${username}`)
                 .then(res => {
                     console.log('Found User: ');
                     console.log(res);

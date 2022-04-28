@@ -9,6 +9,7 @@ import {Profile} from './components/Profile';
 import {SignIn} from './components/SignIn';
 import {SignUp} from './components/SignUp';
 import {UserDashboard} from './components/UserDashboard/UserDashboard';
+import { ShipperDashboard } from './components/UserDashboard/ShipperDashboard';
 
 // React functional component
 function App () {
@@ -86,6 +87,7 @@ function App () {
             <Route exact path="/" element={<SignIn setToken={setToken}/>}/>
             <Route exact path="/SignIn" element={<SignIn setToken={setToken}/>}/>
             <Route exact path="/UserDashboard" element={<UserDashboard token={token}/>}/>
+            <Route exact path="/ShipperDashboard" element={<ShipperDashboard token={token}/>}/>
             <Route exact path="/ProductPage" element={<ProductPage token={token}/>}/>
             <Route exact path="/Profile" element={<Profile token={token}/>}/>
             <Route exact path="/SignUp" element={<SignUp setToken={setToken}/>}/>
