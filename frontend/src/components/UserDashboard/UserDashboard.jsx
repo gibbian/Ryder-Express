@@ -147,7 +147,7 @@ export const UserDashboard = (props) => {
 
   function getDeliveryDate(prop) {
     const date = new Date(prop.date_received);
-    return date.getMonth().toString() + '/' + date.getDate().toString();
+    return date.getMonth().toString() + '/' + date.toLocaleDateString();
   }
 
   return (
