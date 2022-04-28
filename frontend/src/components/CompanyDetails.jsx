@@ -3,31 +3,35 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import Title from './Title';
 
-function preventDefault(event: React.MouseEvent) {
+function preventDefault(event) {
   event.preventDefault();
 }
 
-
-// id, name, detail, contactInfo, shippingRate, fleetSize
 export default function CompanyDetails() {
   return (
     <React.Fragment>
       <Title>Company</Title>
       <Typography component="p" variant="h4">
-        DHL
+        Company Name
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Contact Info:999-999-9999
+        Company Details
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Shipping Rate: $2.54
+        Contact Email:
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Fleet Size: 20
+        Contact Phone Number:
+      </Typography>
+      <Typography color="text.secondary" sx={{ flex: 1 }}>
+        Shipping Rate: $
+      </Typography>
+      <Typography color="text.secondary" sx={{ flex: 1 }}>
+        Fleet Size: 
       </Typography>
       <div>
         <Link color="primary" href="#" onClick={preventDefault}>
-          View Detail
+          View Details
         </Link>
       </div>
     </React.Fragment>

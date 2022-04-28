@@ -8,15 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Title from './Title';
 
 // Generate Order Data
-function createData(
-  id: number,
-  date: string,
-  name: string,
-  shipTo: string,
-  paymentMethod: string,
-  amount: number,
-) {
-  return { id, date, name, shipTo, paymentMethod, amount };
+function createData(id, date, name, shipTo, add1, add2) {
+  return { id, date, name, shipTo, add1, add2 };
 }
 
 const rows = [
@@ -55,7 +48,7 @@ const rows = [
   ),
 ];
 
-function preventDefault(event: React.MouseEvent) {
+function preventDefault(event) {
   event.preventDefault();
 }
 
@@ -69,8 +62,8 @@ export default function Orders() {
             <TableCell>Date</TableCell>
             <TableCell>Name</TableCell>
             <TableCell>Ship To</TableCell>
-            <TableCell>Contact Email</TableCell>
-            <TableCell align="right">Contact Phone Number</TableCell>
+            <TableCell>Anything Add1</TableCell>
+            <TableCell align="right">Anything Add2</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -79,8 +72,8 @@ export default function Orders() {
               <TableCell>{row.date}</TableCell>
               <TableCell>{row.name}</TableCell>
               <TableCell>{row.shipTo}</TableCell>
-              <TableCell>{row.paymentMethod}</TableCell>
-              <TableCell align="right">{`$${row.amount}`}</TableCell>
+              <TableCell>{row.add1}</TableCell>
+              <TableCell align="right">{`$${row.add2}`}</TableCell>
             </TableRow>
           ))}
         </TableBody>
