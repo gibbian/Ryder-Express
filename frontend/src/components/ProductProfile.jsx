@@ -101,8 +101,8 @@ export const ProductProfile = (props) => {
 
 
   useEffect(() => {
-    const shipperID = sessionStorage.getItem("shipperID");
-    apiCall.getReviews(1).then(res => {
+    const shipperID = sessionStorage.getItem("companyID");
+    apiCall.getReviews(shipperID).then(res => {
       setReviews(res.data.data);
     })
   }, []);
