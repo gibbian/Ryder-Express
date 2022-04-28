@@ -38,7 +38,7 @@ VALUES
 (TRUE, FALSE, CURRENT_DATE + 4, 3);
 
 INSERT INTO Delivery (destination, origin_loc, product_name, product_desc, product_picture, delivered_picture, left_warehouse, left_warehouse_date, is_delivered, flagged_for_return, is_return, date_received, buyer_id, seller_id, employee_id)
-VALUES('Ware Commons', 'Northeast', 'Super Metroid Hotlands', 'The 3rd place winner of the Oatsngoats Hacking Contest', 'https://imgur.com/SndVlzu.png', 'https://imgur.com/ZmcBLz4.png', true, CURRENT_DATE - 6, true, false, false, CURRENT_DATE - 1, 1, 12, 86);
+VALUES('Texas Capitol Building', 'Midwest', 'Election maps', 'Maps of theoretical State House compositions from 2008 and 2020', 'https://imgur.com/ZZH4RC2.png', '', true, CURRENT_DATE - 1, false, false, false, CURRENT_DATE + 1, 1, 13, 76);
 
 SELECT * FROM Delivery;
 
