@@ -1,5 +1,5 @@
+import { useEffect, useState } from "react";
 import * as React from 'react';
-import { useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -19,9 +19,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems } from './listItems';
-import CompanyDetails from './CompanyDetails';
+import { CompanyDetails } from './CompanyDetails';
 import CommentBox from "./CommentBox";
-import { apiCalls } from '../common/apiCalls';
+import CommentList from './CommentList';
+import axios from 'axios'
 
 function Copyright(props) {
     return (
@@ -85,21 +86,37 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
-    const [open, setOpen] = React.useState(true);
-    const [reviews, setReviews] = React.useState([]);
-    const apiCall = new apiCalls();
 
-    useEffect(() => { 
-      apiCall.getReviews(1).then(res => {
-        const revs = res.data.data
-        setReviews(revs);
-      }); 
-    }, [])
+    const [companyDetailss, setCompanyDetailss] = useState([])
+
+    const userid = sessionStorage.getItem("id");
+    useEffect(() => {
+        axios.get(`http://localhost:8000/shipper/${userid}`).then(
+            res => {
+                const values = res.data.data;
+                console.log(values);
+                setCompanyDetailss(values);
+            })
+    }, []);
+
+    const [reviews, setReviews] = useState([]);
+    const [details, setDetails] = useState([]);
+
+    useEffect(() => {
+        axios.get(`http://localhost:8000/shipper_reviews/1`).then(
+            res => {
+                const values = res.data.data;
+                console.log(values);
+                setReviews(values);
+            })
+    }, []);
+
+    const [open, setOpen] = React.useState(true);
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
+  
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -173,19 +190,14 @@ function DashboardContent() {
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
                             {/* Company Details */}
-                            <Grid item xs={12} md={4} lg={10.9}>
-                                <Paper
-                                    sx={{
-                                        p: 2,
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        height: 240,
-                                    }}
-                                >
-                                    <CompanyDetails />
-                                </Paper>
+                            <Grid container spacing={4}>
+                                {companyDetailss.map((companyDetails) => 
+                                    <Grid item key={userid} xs={12} md={4} lg={0.9}>
+                                        <CompanyDetails companyDetails={companyDetails}></CompanyDetails>
+                                    </Grid>
+                                )}
                             </Grid>
-                
+
                             {/* Comment List */}
                             <Grid item xs={12} md={4} lg={6.7}>
                                 <Paper
@@ -200,6 +212,7 @@ function DashboardContent() {
                                     <p  id="comment_box" style={{ textAlign: "left" }}>
                                         The comment content!!! {" "}
                                     </p>
+                                    {console.log(userid)}
                                     <p  id="comment_box" style={{ textAlign: "left", color: "gray" }}>
                                         posted 1 minute ago
                                     </p>
