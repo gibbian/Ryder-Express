@@ -16,6 +16,9 @@ module.exports = function routes(app, logger) {
     res.status(200).send('Go to 0.0.0.0:3000.');
   });
 
+
+///////////////////////////DATES///////////////////////////////////////////////
+
   // GET /dates
   app.get('/dates', (req, res) => {
     // obtain a connection from our pool of connections
@@ -209,6 +212,9 @@ module.exports = function routes(app, logger) {
     }
   });
 
+///////////////////////////////EMPLOYEES/////////////////////////////////////////////
+
+
   // GET /employees
   app.get('/employee', (req, res) => {
     // obtain a connection from our pool of connections
@@ -237,76 +243,7 @@ module.exports = function routes(app, logger) {
     });
   });
 
-  //POST delivery with buyer_id, seller_id, employee_id, origin_loc, destination, product_name, date_received
-  app.post('/delivery', (req, res) => {
-    if (!("buyer_id" in req.body)){ //foreign key requirement
-      res.status(400).send({
-        success: false,
-        response: "Missing required field in request body: `buyer_id`",
-      });
-    }
-    else if (!("seller_id" in req.body)){ //foreign key requirement
-      res.status(400).send({
-        success: false,
-        response: "Missing required field in request body: `seller_id`",
-      });
-    }
-    else if (!("employee_id" in req.body)){ //foreign key requirement
-      res.status(400).send({
-        success: false,
-        response: "Missing required field in request body: `employee_id`",
-      });
-    }
-    else if (!("origin_loc" in req.body)){ //needs to be a valid location
-      res.status(400).send({
-        success: false,
-        response: "Missing required field in request body: `origin_loc`",
-      });
-    }
-    else if (!("destination" in req.body)){ //needs to be a valid location
-      res.status(400).send({
-        success: false,
-        response: "Missing required field in request body: `destination`",
-      });
-    }
-    else if (!("product_name" in req.body)){ //Product needs a name
-      res.status(400).send({
-        success: false,
-        response: "Missing required field in request body: `product_name`",
-      });
-    }
-    else if (!("date_received" in req.body)){ //Product needs a start date
-      res.status(400).send({
-        success: false,
-        response: "Missing required field in request body: `date_received`",
-      });
-    }
-    else{
-      pool.getConnection(function (err, connection){
-        if(err){
-          logger.error('Problem obtaining MySQL connection',err)
-          res.status(400).send('Problem obtaining MySQL connection');
-        } else {
-          connection.query('INSERT INTO Delivery (buyer_id, seller_id, employee_id, origin_loc, destination, product_name, date_received) VALUES (?, ?, ?, ?, ?, ?, ?)', 
-          [req.body.buyer_id, req.body.seller_id, req.body.employee_id, req.body.origin_loc, req.body.destination, req.body.product_name, req.body.date_received], function (err, rows, fields) {
-            connection.release();
-            if (err) {
-              logger.error("Error while inserting delivery: \n", err);
-              res.status(400).json({
-                "data": [],
-                "error": "Error inserting delivery"
-              })
-            } else {
-              res.status(200).json({
-              });
-            }
-          });
-        }
-      });
-    }
-  });
-
-  // GET /employees by company
+ // GET /employees by company
   app.get('/employee/:company', (req, res) => {
     // obtain a connection from our pool of connections
     if (!("company" in req.params)){
@@ -383,6 +320,79 @@ module.exports = function routes(app, logger) {
       });
     }   
   });
+
+
+////////////////////////////////DELIVERY//////////////////////////////////////////////
+
+  //POST delivery with buyer_id, seller_id, employee_id, origin_loc, destination, product_name, date_received
+  app.post('/delivery', (req, res) => {
+    if (!("buyer_id" in req.body)){ //foreign key requirement
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `buyer_id`",
+      });
+    }
+    else if (!("seller_id" in req.body)){ //foreign key requirement
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `seller_id`",
+      });
+    }
+    else if (!("employee_id" in req.body)){ //foreign key requirement
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `employee_id`",
+      });
+    }
+    else if (!("origin_loc" in req.body)){ //needs to be a valid location
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `origin_loc`",
+      });
+    }
+    else if (!("destination" in req.body)){ //needs to be a valid location
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `destination`",
+      });
+    }
+    else if (!("product_name" in req.body)){ //Product needs a name
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `product_name`",
+      });
+    }
+    else if (!("date_received" in req.body)){ //Product needs a start date
+      res.status(400).send({
+        success: false,
+        response: "Missing required field in request body: `date_received`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection');
+        } else {
+          connection.query('INSERT INTO Delivery (buyer_id, seller_id, employee_id, origin_loc, destination, product_name, date_received) VALUES (?, ?, ?, ?, ?, ?, ?)', 
+          [req.body.buyer_id, req.body.seller_id, req.body.employee_id, req.body.origin_loc, req.body.destination, req.body.product_name, req.body.date_received], function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while inserting delivery: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error inserting delivery"
+              })
+            } else {
+              res.status(200).json({
+              });
+            }
+          });
+        }
+      });
+    }
+  });
+
 
   // GET /delivery
   app.get('/delivery', (req, res) => {
@@ -532,6 +542,9 @@ module.exports = function routes(app, logger) {
     }
   });
 
+
+  ///////////////////////////////////SHIPPER/////////////////////////////////////////////
+
   //Get /shipper by username
   app.get('/shipper/:username', (req, res) => {
     if (!("username" in req.params)){
@@ -630,6 +643,44 @@ module.exports = function routes(app, logger) {
     }   
   });
 
+ //Get /shipper_id by name
+  app.get('/shipper/:name', (req, res) => {
+    // obtain a connection from our pool of connections
+    if (!("name" in req.params)){
+      res.status(400).send({
+        success: false,
+        response: "Missing required field: `name`",
+      });
+    }
+    else{
+      pool.getConnection(function (err, connection){
+        if(err){
+          // if there is an issue obtaining a connection, release the connection instance and log the error
+          logger.error('Problem obtaining MySQL connection',err)
+          res.status(400).send('Problem obtaining MySQL connection');
+        } else {
+          // if there is no issue obtaining a connection, execute query and release connection
+          connection.query('SELECT id FROM Shipper WHERE name = ?', req.params.name, function (err, rows, fields) {
+            connection.release();
+            if (err) {
+              logger.error("Error while fetching shipper: \n", err);
+              res.status(400).json({
+                "data": [],
+                "error": "Error obtaining shipper"
+              })
+            } else {
+              res.status(200).json({
+                "data": rows
+              });
+            }
+          });
+          
+        }
+      });
+    }
+  });
+
+  //////////////////////////////////////////CUSTOMER/////////////////////////////////////////////
   // GET /customer
   app.get('/customer', (req, res) => {
     // obtain a connection from our pool of connections
@@ -728,42 +779,8 @@ module.exports = function routes(app, logger) {
       });
     }
   });
-  //Get /shipper_id by name
-  app.get('/shipper/:name', (req, res) => {
-    // obtain a connection from our pool of connections
-    if (!("name" in req.params)){
-      res.status(400).send({
-        success: false,
-        response: "Missing required field: `name`",
-      });
-    }
-    else{
-      pool.getConnection(function (err, connection){
-        if(err){
-          // if there is an issue obtaining a connection, release the connection instance and log the error
-          logger.error('Problem obtaining MySQL connection',err)
-          res.status(400).send('Problem obtaining MySQL connection');
-        } else {
-          // if there is no issue obtaining a connection, execute query and release connection
-          connection.query('SELECT id FROM Shipper WHERE name = ?', req.params.name, function (err, rows, fields) {
-            connection.release();
-            if (err) {
-              logger.error("Error while fetching shipper: \n", err);
-              res.status(400).json({
-                "data": [],
-                "error": "Error obtaining shipper"
-              })
-            } else {
-              res.status(200).json({
-                "data": rows
-              });
-            }
-          });
-          
-        }
-      });
-    }
-  });
+ 
+  ////////////////////////////////////////BUYER_REVIEW///////////////////////////////////////////////////////
 
   // GET /buyer_review all reviews for a particular buyer
   app.get('/buyer_reviews/:company_id', (req, res) => {
@@ -888,6 +905,8 @@ module.exports = function routes(app, logger) {
     }
   });
 
+////////////////////////////////////////////SHIPPER_REVIEW///////////////////////////////////////////////////////
+
     // GET /shipper_review all reviews for a particular shipper
   app.get('/shipper_reviews/:company_id', (req, res) => {
     // obtain a connection from our pool of connections
@@ -1011,6 +1030,9 @@ module.exports = function routes(app, logger) {
     }
   });
 
+
+  ///ROUTES FOR CREATING A NEW CUSTOMER OR SHPPER ACCOUNT
+
   app.post('/customer',  (req, res) => {
     // obtain a connection from our pool of connections
     pool.getConnection(function (err, connection){
@@ -1019,25 +1041,59 @@ module.exports = function routes(app, logger) {
         logger.error('Problem obtaining MySQL connection',err)
         res.status(400).send('Problem obtaining MySQL connection'); 
       } else {
-        //const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-        connection.query('INSERT INTO Customer(name, email, phone, username, password) VALUES(?,?,?,?,?)', [req.body.name, req.body.email, req.body.phone, req.body.username, req.body.password], function (err, rows, fields) {
-          connection.release();
-          //if a customer does not already exist, create a new customer
+        //do not create new user if username already exists
+        connection.query('SELECT * FROM Customer WHERE username = ?', req.body.username, function (err, rows, fields) {
           if (err) {
-            logger.error("Error while creating customer: \n", err);
-            res.status(400).json({
-              "data": [],
-              "error": "Error creating customer"
-            })
+            res.status(400).send("Error while checking if username exists");
+
+      
+            // logger.error("Error while fetching user: \n", err);
+            // res.status(400).json({
+            //   "data": [],
+            //   "error": "Error obtaining user"
+            // })
           } else {
-            res.status(200).json({
-              "data": rows
-            });
+            if (rows.length > 0) {
+              res.status(400).json({
+                "data": [],
+                "error": "Username already exists, please use a different username"
+              })
+            } else {
+              connection.query('INSERT INTO Customer(name, email, phone, username, password) VALUES(?,?,?,?,?)', [req.body.name, req.body.email, req.body.phone, req.body.username, req.body.password], function (err, rows, fields) {
+                connection.release();
+                if (err) {
+                  logger.error("Error while creating user: \n", err);
+                  res.status(400).json({
+                    "data": [],
+                    "error": "Error creating user"
+                  })
+                } else {
+                  //create token for new user
+                  const token = jwt.sign({
+                    id: rows.insertId,
+                    username: req.body.username,
+                    password: req.body.password
+                  },
+                  process.env.JWT_SECRET,
+                  {
+                    expiresIn: '1h'
+                  });
+
+                  res.status(200).json({
+                    "data": rows,
+                    "token": token
+                  });
+                }
+              });
+            }
           }
         });
       }
     });
-  }); 
+  });
+
+
+        
 
 app.post('/shipper',  (req, res) => {
   // obtain a connection from our pool of connections
@@ -1045,28 +1101,61 @@ app.post('/shipper',  (req, res) => {
     if(err){
       // if there is an issue obtaining a connection, release the connection instance and log the error
       logger.error('Problem obtaining MySQL connection',err)
-      res.status(400).send('Problem obtaining MySQL connection');
+      res.status(400).send('Problem obtaining MySQL connection'); 
     } else {
-      //const hashedPassword = bcrypt.hashSync(req.body.password, 10);
-      connection.query('INSERT INTO Shipper(name, email, phone, region, shipping_rates, fleet_size, num_deliveries, is_verified, username, password, bio) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
-       [req.body.name, req.body.email, req.body.phone, req.body.region, req.body.shipping_rates, req.body.fleet_size, 0, false, req.body.username, req.body.password,''], function (err, rows, fields) {
-        connection.release();
-        //if a customer does not already exist, create a new customer
+      //do not create new user if username already exists
+      connection.query('SELECT * FROM Shipper WHERE username = ?', req.body.username, function (err, rows, fields) {
         if (err) {
-          logger.error("Error while creating shipper: \n", err);
-          res.status(400).json({
-            "data": [],
-            "error": "Error creating shipper"
-          })
+          res.status(400).send("Error while checking if username exists");
+          // logger.error("Error while fetching user: \n", err);
+          // res.status(400).json({
+          //   "data": [],
+          //   "error": "Error obtaining user"
+          // })
         } else {
-          res.status(200).json({
-            "data": rows
-          });
+          if (rows.length > 0) {
+            res.status(400).json({
+              "data": [],
+              "error": "Username already exists, please use a different username"
+            })
+          } else {
+            connection.query('INSERT INTO Shipper(name, email, phone, region, shipping_rates, fleet_size, num_deliveries, is_verified, username, password, bio) VALUES(?,?,?,?,?,?,?,?,?,?,?)',
+            [req.body.name, req.body.email, req.body.phone, req.body.region, req.body.shipping_rates, req.body.fleet_size, 0, false, req.body.username, req.body.password,''], function (err, rows, fields) {
+              connection.release();
+              if (err) {
+                logger.error("Error while creating user: \n", err);
+                res.status(400).json({
+                  "data": [],
+                  "error": "Error creating user"
+                })
+              } else {
+                //create token for new user
+                const token = jwt.sign({
+                  id: rows.insertId,
+                  username: req.body.username,
+                  password: req.body.password
+                },
+                process.env.JWT_SECRET,
+                {
+                  expiresIn: '1h'
+                });
+
+                res.status(200).json({
+                  "data": rows,
+                  "token": token
+                });
+              }
+            });
+          }
         }
       });
     }
   });
 });
+
+
+
+
 //put route for updating shipping rates or fleet size, or bio, or num deliveries
 app.put('/shipper/:username', (req, res) => {
   if (!("username" in req.params)){

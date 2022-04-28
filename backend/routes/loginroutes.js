@@ -37,7 +37,8 @@ app.post('/customer/login', (req, res) => {
                     //create a token
                     const token = jwt.sign({
                         username: req.body.username,
-                        password: req.body.password
+                        password: req.body.password,
+                        id: rows[0].id
                     }, 'secret', {
                         expiresIn: '1h'
                     });
@@ -90,7 +91,8 @@ app.get('/customer/login', (req, res) => {
                     //create a token
                     const token = jwt.sign({  //token is a string
                         username: req.body.username,
-                        password: req.body.password
+                        password: req.body.password,
+                        id: rows[0].id
                     }, 'secret', {
                         expiresIn: '1h'
                     });
@@ -105,6 +107,7 @@ app.get('/customer/login', (req, res) => {
                     res.status(400).json({
                         "data": [],
                         "error": "Incorrect password"
+
                     })  //if the password is incorrect
                 }
             }
@@ -146,7 +149,8 @@ app.get('/customer/login', (req, res) => {
               if(req.body.password === rows[0].password){
                 const token = jwt.sign({
                     username: req.body.username,
-                    password: req.body.password
+                    password: req.body.password,
+                    id: rows[0].id
                 }, 'secret', {
                     expiresIn: '1h'
                 });
@@ -197,7 +201,8 @@ app.get('/shipper/login', (req, res) => {
               if(req.body.password === rows[0].password){
                 const token = jwt.sign({
                     username: req.body.username,
-                    password: req.body.password
+                    password: req.body.password,
+                    id: rows[0].id
                 }, 'secret', {
                     expiresIn: '1h'
                 });
