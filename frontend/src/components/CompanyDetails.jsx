@@ -7,19 +7,28 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function Deposits() {
+export default function CompanyDetails() {
   return (
     <React.Fragment>
       <Title>Recent Deposits</Title>
       <Typography component="p" variant="h4">
-        $3,024.00
+        Company Name
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on 15 March, 2019
+        Contact Email:
+      </Typography>
+      <Typography color="text.secondary" sx={{ flex: 1 }}>
+        Contact Phone:
+      </Typography>
+      <Typography color="text.secondary" sx={{ flex: 1 }}>
+        Shipping Rate: $
+      </Typography>
+      <Typography color="text.secondary" sx={{ flex: 1 }}>
+        Fleet Size: 
       </Typography>
       <div>
         <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
+          View Details
         </Link>
       </div>
     </React.Fragment>
