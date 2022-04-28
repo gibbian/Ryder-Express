@@ -72,7 +72,7 @@ export class apiCalls {
                     console.log(response);
                     sessionStorage.setItem('token', response.data.data[0].token);
                     sessionStorage.setItem('username', username);
-                    sessionStorage.setItem('isShipper', true);
+                    sessionStorage.setItem('isShipper', false);
                     resolve(response);
                 })
                 .catch(err => {

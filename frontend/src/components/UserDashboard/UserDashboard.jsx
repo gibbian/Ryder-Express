@@ -55,8 +55,9 @@ export const BasicMenu = ({ userName }) => {
   };
   const handleLogout = () => {
     console.log("logout");
-    navigate('/');
     sessionStorage.clear();
+    navigate('/');
+    
   }
 
   return (
@@ -104,8 +105,6 @@ export const UserDashboard = (props) => {
     setName(currentUser.data.data[0].name);
     setId(currentUser.data.data[0].id);
   }
-  
- 
 
   useEffect(() => { 
     getUserDetails();
@@ -133,8 +132,9 @@ export const UserDashboard = (props) => {
   };
   const handleLogout = () => {
     console.log("logout");
-    navigate('/');
     sessionStorage.clear();
+    navigate('/');
+    
   }
 
   function getStatus(prop){
