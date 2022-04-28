@@ -87,17 +87,6 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
 
-    const [data, setData] = useState([]);
-    const [id, setId] = useState(0);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [region, setRegion] = useState('');
-    const [shipping_rates, setShippingRates] = useState('');
-    const [fleet_size, setFleetSize] = useState('');
-    const [num_deliveries, setNumDeliveries] = useState('');
-    const [is_verified, setIsVerified] = useState('');
-
     const [companyDetailss, setCompanyDetailss] = useState([])
 
 
@@ -123,7 +112,6 @@ function DashboardContent() {
 
 
     const [open, setOpen] = React.useState(true);
-
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -206,12 +194,12 @@ function DashboardContent() {
                         <Grid container spacing={3}>
                             {/* Company Details */}
                             <Grid container spacing={4}>
-                                {companyDetailss.map((companyDetails) => (
+                                {companyDetailss.map((companyDetails) => 
+                                    <Grid item key={userid} xs={12} md={4} lg={0.9}>
 
-                                    <Grid item key={companyDetails.id} xs={12} md={4} lg={0.9}>
                                         <CompanyDetails companyDetails={companyDetails}></CompanyDetails>
                                     </Grid>
-                                ))}
+                                )}
                             </Grid>
 
                             {/* Comment List */}

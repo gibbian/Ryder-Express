@@ -3,7 +3,6 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
-import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
@@ -21,17 +20,6 @@ import { UserDashboard } from "./UserDashboard/UserDashboard";
 const theme = createTheme();
 
 export const Home = () => {
-
-  const [data, setData] = useState([]);
-  const [id, setId] = useState(0);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [region, setRegion] = useState('');
-  const [shipping_rates, setShippingRates] = useState('');
-  const [fleet_size, setFleetSize] = useState('');
-  const [num_deliveries, setNumDeliveries] = useState('');
-  const [is_verified, setIsVerified] = useState('');
 
   const [cards, setCards] = useState([])
 
