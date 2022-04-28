@@ -24,19 +24,6 @@ import CommentBox from "./CommentBox";
 import CommentList from './CommentList';
 import axios from 'axios'
 
-function Copyright(props) {
-    return (
-        <Typography variant="body2" color="text.secondary" align="center" {...props}>
-            {'Copyright © '}
-            <Link color="inherit" href="http://localhost:3000/">
-                Ryder Express
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
-}
-
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -90,6 +77,7 @@ function DashboardContent() {
     const [companyDetailss, setCompanyDetailss] = useState([])
 
     const userid = sessionStorage.getItem("id");
+
     useEffect(() => {
         axios.get(`http://localhost:8000/shipper/${userid}`).then(
             res => {
@@ -218,14 +206,11 @@ function DashboardContent() {
                                     </p>
                                 </Paper>
                             </Grid>
-
                             {/* Comment Box */}
                             <Grid>
                                 <CommentBox />
                             </Grid>
-
                         </Grid>
-                        <Copyright sx={{ pt: 4 }} />
                     </Container>
                 </Box>
             </Box>
