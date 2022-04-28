@@ -130,11 +130,10 @@ export const Home = () => {
               Contact Us
             </Typography>
             <Typography
-              component="h1"
-              variant="h2"
+              variant="subtitle1"
               align="center"
-              color="text.primary"
-              gutterBottom
+              color="text.secondary"
+              component="p"
             >
               RyderExpress@gmail.com{'\n'}
             </Typography>
