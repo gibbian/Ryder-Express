@@ -16,11 +16,6 @@ import { apiCalls } from '../common/apiCalls';
 import { useState } from "react";
 import { Navigate, useNavigate } from 'react-router-dom';
 
-const fetchBase = () => {
-  axios.get(`http://localhost:8000/shipper`).then((res) => {
-    alert(res);
-  })
-}
 
 const theme = createTheme();
 
@@ -35,15 +30,6 @@ export const SignIn = (props) => {
     if (isShipper) {
       apiCall.shipperLogin(data.get('username'), data.get('password')).then((res) => {
         if (res.status <= 201) {
-          apiCall.getShipperToken().then((res) => {
-            console.log("Result: ");
-            console.log(res);
-            sessionStorage.setItem('token', res.data.data[0].token);
-          })
-            .catch((err) => {
-              console.log("Error: ");
-              console.log(err);
-            });
           navigate('/home');
         }
       }).catch((err2) => {
@@ -53,15 +39,6 @@ export const SignIn = (props) => {
     else {
       apiCall.customerLogin(data.get('username'), data.get('password')).then((res) => {
         if (res.status <= 201) {
-          apiCall.getCustomerToken().then((res) => {
-            console.log("Result: ");
-            console.log(res);
-            sessionStorage.setItem('token', res.data.data[0].token);
-          })
-            .catch((err) => {
-              console.log("Error: ");
-              console.log(err);
-            });
           navigate('/home');
         }
       }).catch((err2) => {
