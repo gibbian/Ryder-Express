@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 
-export const ProductCard = ({card}) => {
+export const ProductCard = ({ card }) => {
 
   const navigate = useNavigate();
 

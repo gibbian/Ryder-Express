@@ -20,20 +20,20 @@ import { UserDashboard } from "./UserDashboard/UserDashboard";
 
 const theme = createTheme();
 
-export const Home = () =>{
+export const Home = () => {
 
-    const [data, setData] = useState([]);
-    const [id, setId] = useState(0);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [region, setRegion] = useState('');
-    const [shipping_rates, setShippingRates] = useState('');
-    const [fleet_size, setFleetSize] = useState('');
-    const [num_deliveries, setNumDeliveries] = useState('');
-    const [is_verified, setIsVerified] = useState('');
+  const [data, setData] = useState([]);
+  const [id, setId] = useState(0);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [region, setRegion] = useState('');
+  const [shipping_rates, setShippingRates] = useState('');
+  const [fleet_size, setFleetSize] = useState('');
+  const [num_deliveries, setNumDeliveries] = useState('');
+  const [is_verified, setIsVerified] = useState('');
 
-    const [cards, setCards] = useState([])
+  const [cards, setCards] = useState([])
 
     useEffect(() => {
         axios.get(`http://localhost:8000/shipper`).then(
@@ -142,10 +142,11 @@ export const Home = () =>{
               Contact Us
             </Typography>
             <Typography
-              variant="subtitle1"
+              component="h1"
+              variant="h2"
               align="center"
-              color="text.secondary"
-              component="p"
+              color="text.primary"
+              gutterBottom
             >
               RyderExpress@gmail.com{'\n'}
             </Typography>
