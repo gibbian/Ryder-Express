@@ -34,6 +34,8 @@ export const SignIn = (props) => {
             console.log("Result: ");
             console.log(res);
             sessionStorage.setItem('token', res.data.data[0].token);
+            sessionStorage.setItem('username', data.get('username'));
+            sessionStorage.setItem('isShipper', isShipper);
           })
             .catch((err) => {
               console.log("Error: ");
@@ -52,6 +54,12 @@ export const SignIn = (props) => {
             console.log("Result: ");
             console.log(res);
             sessionStorage.setItem('token', res.data.data[0].token);
+            sessionStorage.setItem('username', data.get('username'));
+            sessionStorage.setItem('isShipper', isShipper);
+            console.log("Test");
+            console.log(sessionStorage.getItem('username'));
+            console.log(sessionStorage.getItem('isShipper'));
+            debugger;
           })
             .catch((err) => {
               console.log("Error: ");

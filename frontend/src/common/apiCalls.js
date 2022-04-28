@@ -44,41 +44,41 @@ export class apiCalls {
 
     shipperLogin(username, password) {
         return new Promise((resolve, reject) => {
-            axios.post(`${apiEndpoint}/shipper/login`, {username: username, password: password})
-            .then(response => {
-                console.log('Response: ');
-                console.log(response);
-                sessionStorage.setItem('token', response.data.data[0].token);
-                resolve(response);
-            })
-            .catch(err => {
-                console.log('Error: ');
-                console.log(err);
-                reject(err);
-            })
-            .finally(() => {
-                console.log("We're in");
-            });
+            axios.post(`${apiEndpoint}/shipper/login`, { username: username, password: password })
+                .then(response => {
+                    console.log('Response: ');
+                    console.log(response);
+                    sessionStorage.setItem('token', response.data.data[0].token);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log('Error: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                });
         })
     }
 
     customerLogin(username, password) {
         return new Promise((resolve, reject) => {
-            axios.post(`${apiEndpoint}/customer/login`, {username: username, password: password})
-            .then(response => {
-                console.log('Response: ');
-                console.log(response);
-                sessionStorage.setItem('token', response.data.data[0].token);
-                resolve(response);
-            })
-            .catch(err => {
-                console.log('Error: ');
-                console.log(err);
-                reject(err);
-            })
-            .finally(() => {
-                console.log("We're in");
-            });
+            axios.post(`${apiEndpoint}/customer/login`, { username: username, password: password })
+                .then(response => {
+                    console.log('Response: ');
+                    console.log(response);
+                    sessionStorage.setItem('token', response.data.data[0].token);
+                    resolve(response);
+                })
+                .catch(err => {
+                    console.log('Error: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                });
         })
     }
 
@@ -136,4 +136,62 @@ export class apiCalls {
         }
         )
     }
+
+    getDeliveries(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/delivery/buyer/${id}}`)
+                .then(res => {
+                    console.log('Response: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch deliveries: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
+    getReviews(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/shipper_reviews/${id}}`)
+                .then(res => {
+                    console.log('Response: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
+    getCustomerByUsername(username) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/customer/${username}}`)
+                .then(res => {
+                    console.log('Response: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
 }
