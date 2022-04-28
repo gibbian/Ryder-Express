@@ -14,7 +14,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { apiCalls } from '../common/apiCalls';
 import { useState } from "react";
-import { Navigat, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const fetchBase = () => {
   axios.get(`http://localhost:8000/shipper`).then((res) => {

@@ -20,19 +20,6 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Orders from './Orders';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 export const Profile = () =>{
   return(
     <DashboardContent />
@@ -122,6 +109,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
+              {sessionStorage.getItem('id')}
               Dashboard
             </Typography>
             <IconButton color="inherit">
@@ -184,7 +172,6 @@ function DashboardContent() {
                 </Paper>
               </Grid>
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
