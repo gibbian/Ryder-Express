@@ -25,7 +25,6 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import { apiCalls } from '../common/apiCalls';
 import { useEffect, useState } from "react";
-import { async } from 'q';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { Card } from '@mui/material';
 import { ReviewCard } from "./ReviewCard";
@@ -162,6 +161,17 @@ export const ProductProfile = (props) => {
     return date.getMonth().toString() + '/' + date.getDate().toString();
   }
 
+  const [values, setValues] = useState([])
+
+  // useEffect(() => {
+  //   axios.get(`http://localhost:8000/shipper`).then(
+  //     res => {
+  //       const values = res.data.data;
+  //       console.log(values);
+  //       setValues(values);
+  //     })
+  // }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <AppBar position="static">
@@ -186,6 +196,7 @@ export const ProductProfile = (props) => {
               onClick={handleNameClick}
             >
               <u>
+                User
                 {name}
               </u>
             </Button>
@@ -206,15 +217,16 @@ export const ProductProfile = (props) => {
         </Box>
       </AppBar>
       <Box sx={{ width: '200%' }}>
-        <Grid container direction="row" justifyContent="space-evenly" alignContent="baseline" sx={{ width: '200%' }}>
-          <Grid container alignContent="center" sx={{ width: '100%' }} xs={12}>
-            <Grid mt={10} ml={10}>
+        <Grid container direction="row" justifyContent="space-evenly" alignContent="baseline" sx={{ width: '100%' }}>
+          <Grid container alignContent="center"  sx={{ width: '200%' }} xs={12}>
+            <Grid mt={10} mx={50}>
               <Card sx={{ width: '200%' }}>
                 <CardContent align="center" >
                   <Grid container direction="column" justifyContent="space-between" mr={10} >
                     <Grid mb={2} bl={10} br={10}>
                       <Typography variant="h4" component="h2">
-                        Company Name
+                        Temple Runners
+                        {values.name}
                       </Typography>
                     </Grid>
                     <Grid mb={2}>
@@ -224,7 +236,8 @@ export const ProductProfile = (props) => {
                             <u>Shipping Rate</u>
                           </Typography>
                           <Typography variant="h6" component="h2">
-                            $5.00 per day
+                            {'$300'}
+                            {/* {'$' + props.shipping_rate} */}
                           </Typography>
                         </Grid>
 
@@ -243,10 +256,12 @@ export const ProductProfile = (props) => {
                         <u>Contact</u>
                       </Typography>
                       <Typography variant="h6" component="h2">
-                        Email
+                        Email: templerunners@gmail.com
+                        {/* {values.id.email} */}
                       </Typography>
                       <Typography variant="h6" component="h2">
-                        Phone Number
+                        Phone Number: 917-769-3243
+                        {/* {values.id.phone_number} */}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -279,9 +294,10 @@ export const ProductProfile = (props) => {
             </Grid>
           </CardContent>
         </Card>
-        {reviews.map(review => (
-          <Grid item key={review.id} xs={12} sm={8} md={6} align="center">
-            <ReviewCard card={review}></ReviewCard>
+        {reviews.map((review) => (
+          <Grid item key={review} xs={12} sm={8} md={6} align="center">
+            <ReviewCard review={review}></ReviewCard>
+            {console.log(review)}
           </Grid>
         ))}
       </Box>

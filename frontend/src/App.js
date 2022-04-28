@@ -95,6 +95,7 @@ function App () {
             <Route exact path="/SignUp" element={<SignUp setToken={setToken}/>}/>
             <Route exact path="/Home" element={<Home token={token}/>}/>
             <Route exact path="/Checkout" element={<Checkout token={token}/>}/>
+            <Route exact path="/ProductProfile" element={<ProductProfile token={token}/>}/>
           </Routes>
         </div>
       </div>      
