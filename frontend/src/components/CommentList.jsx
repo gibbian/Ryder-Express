@@ -73,7 +73,6 @@ export const CommentList = ({ reviewList }) => {
                                     color="text.primary"
                                 >
                                     Sandra Adams
-                                    {reviews.text}
                                 </Typography>
 
                             </React.Fragment>
