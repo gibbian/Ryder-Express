@@ -55,9 +55,8 @@ export const BasicMenu = ({ userName }) => {
   };
   const handleLogout = () => {
     console.log("logout");
-    sessionStorage.clear();
     navigate('/');
-    
+    sessionStorage.clear();
   }
 
   return (
@@ -90,25 +89,27 @@ export const BasicMenu = ({ userName }) => {
   );
 }
 
-export const UserDashboard = (props) => {
+export const ShipperDashboard = (props) => {
   
   const apiCall = new apiCalls(); 
   const navigate = useNavigate();
   
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [deliveries, setDeliveries] = useState([]);
-  const [name, setName] = useState('');
+  const [companyName, setCompanyName] = useState('');
   const [id, setId] = useState(0);
 
   async function getUserDetails() {
-    const currentUser =  await apiCall.getCustomerByUsername(sessionStorage.getItem('username'));
-    setName(currentUser.data.data[0].name);
+    const currentUser =  await apiCall.getShipperByUsername(sessionStorage.getItem('username'));
+    setCompanyName(currentUser.data.data[0].name);
     setId(currentUser.data.data[0].id);
   }
+  
+ 
 
   useEffect(() => { 
     getUserDetails();
-    apiCall.getDeliveries(id).then(res => {
+    apiCall.getOutgoingDeliveries(id).then(res => {
       const orders = res.data.data
       setDeliveries(orders);
     }); 
@@ -132,9 +133,8 @@ export const UserDashboard = (props) => {
   };
   const handleLogout = () => {
     console.log("logout");
-    sessionStorage.clear();
     navigate('/');
-    
+    sessionStorage.clear();
   }
 
   function getStatus(prop){
@@ -172,7 +172,7 @@ export const UserDashboard = (props) => {
           >
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 2 }}>
-            Orders
+            Outgoing Orders
           </Typography>
           <Typography>
             <Button
@@ -184,7 +184,7 @@ export const UserDashboard = (props) => {
               onClick={handleNameClick}
             >
               <u>
-                {name}
+                {companyName}
               </u>
             </Button>
             <Menu
@@ -208,7 +208,8 @@ export const UserDashboard = (props) => {
           <Table  aria-label="simple table" >
             <TableHead>
               <TableRow>
-                <TableCell align="right">Product Name</TableCell>
+                <TableCell align="right">Product</TableCell>
+                <TableCell align="right">Destination</TableCell>
                 <TableCell align="right">Status</TableCell>
                 <TableCell align="right">Expected Delivery</TableCell>
               </TableRow>
@@ -220,8 +221,9 @@ export const UserDashboard = (props) => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell align="right" key="productName">{order.product_name}</TableCell>
-                  <TableCell align="right" key="orderStatus">{getStatus(order)}</TableCell>
-                  <TableCell align="right" key="deliveryDate">{getDeliveryDate(order)}</TableCell>
+                  <TableCell align="right" key="destination">{order.destination}</TableCell>
+                  <TableCell align="right" key="status">{getStatus(order)}</TableCell>
+                  <TableCell align="right" key="expectedDelivery">{getDeliveryDate(order)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

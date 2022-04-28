@@ -72,7 +72,7 @@ export class apiCalls {
                     console.log(response);
                     sessionStorage.setItem('token', response.data.data[0].token);
                     sessionStorage.setItem('username', username);
-                    sessionStorage.setItem('isShipper', true);
+                    sessionStorage.setItem('isShipper', false);
                     resolve(response);
                 })
                 .catch(err => {
@@ -160,6 +160,25 @@ export class apiCalls {
         })
     }
 
+    getOutgoingDeliveries(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/delivery/seller/${id}}`)
+                .then(res => {
+                    console.log('Response: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch deliveries: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
     getReviews(id) {
         return new Promise((resolve, reject) => {
             axios.get(`${apiEndpoint}/shipper_reviews/${id}}`)
@@ -181,9 +200,47 @@ export class apiCalls {
 
     getCustomerByUsername(username) {
         return new Promise((resolve, reject) => {
-            axios.get(`${apiEndpoint}/customer/${username}}`)
+            axios.get(`${apiEndpoint}/customer/${username}`)
                 .then(res => {
-                    console.log('Response: ');
+                    console.log('Found User: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
+    getShipperByUsername(username) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/shipper/${username}`)
+                .then(res => {
+                    console.log('Found User: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
+    getEmployee(companyID, employeeID){
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/employee/${companyID}/${employeeID}`)
+                .then(res => {
+                    console.log('Found Employee: ');
                     console.log(res);
                     resolve(res);
                 })
