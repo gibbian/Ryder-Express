@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -20,6 +21,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems } from './listItems';
 import CompanyDetails from './CompanyDetails';
 import CommentBox from "./CommentBox";
+import { apiCalls } from '../common/apiCalls';
 
 function Copyright(props) {
     return (
@@ -84,6 +86,16 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
     const [open, setOpen] = React.useState(true);
+    const [reviews, setReviews] = React.useState([]);
+    const apiCall = new apiCalls();
+
+    useEffect(() => { 
+      apiCall.getReviews(1).then(res => {
+        const revs = res.data.data
+        setReviews(revs);
+      }); 
+    }, [])
+
     const toggleDrawer = () => {
         setOpen(!open);
     };
@@ -208,6 +220,6 @@ function DashboardContent() {
     );
 }
 
-export default function Dashboard() {
+export const Profile = () => {
     return <DashboardContent />;
 }
