@@ -17,16 +17,16 @@ import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems} from './listItems';
+import { mainListItems } from './listItems';
 import CompanyDetails from './CompanyDetails';
-import Orders from './Orders';
+import CommentBox from "./CommentBox";
 
 function Copyright(props) {
     return (
         <Typography variant="body2" color="text.secondary" align="center" {...props}>
             {'Copyright © '}
-            <Link color="inherit" href="https://mui.com/">
-                Your Website
+            <Link color="inherit" href="http://localhost:3000/">
+                Ryder Express
             </Link>{' '}
             {new Date().getFullYear()}
             {'.'}
@@ -160,8 +160,8 @@ function DashboardContent() {
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
-                            {/* Recent Deposits */}
-                            <Grid item xs={12} md={4} lg={3}>
+                            {/* Company Details */}
+                            <Grid item xs={12} md={4} lg={10.9}>
                                 <Paper
                                     sx={{
                                         p: 2,
@@ -173,18 +173,38 @@ function DashboardContent() {
                                     <CompanyDetails />
                                 </Paper>
                             </Grid>
-                            {/* Company Calender */}
-                            <Grid item xs={12}>
-                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <Orders />
+                
+                            {/* Comment List */}
+                            <Grid item xs={12} md={4} lg={6.7}>
+                                <Paper
+                                    sx={{
+                                        p: 2,
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        height: 240,
+                                    }}
+                                >
+                                    <h5 style={{ margin: 0, textAlign: "left" }}>Michel</h5>
+                                    <p style={{ textAlign: "left" }}>
+                                        The comment content!!! {" "}
+                                    </p>
+                                    <p style={{ textAlign: "left", color: "gray" }}>
+                                        posted 1 minute ago
+                                    </p>
                                 </Paper>
                             </Grid>
+
+                            {/* Comment Box */}
+                            <Grid>
+                                <CommentBox />
+                            </Grid>
+
                         </Grid>
                         <Copyright sx={{ pt: 4 }} />
                     </Container>
                 </Box>
             </Box>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }
 

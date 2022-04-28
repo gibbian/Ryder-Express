@@ -15,13 +15,10 @@ export default function CompanyDetails() {
         Company Name
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Company Details
-      </Typography>
-      <Typography color="text.secondary" sx={{ flex: 1 }}>
         Contact Email:
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Contact Phone Number:
+        Contact Phone:
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
         Shipping Rate: $
