@@ -136,11 +136,10 @@ export const Home = () => {
         >
           <Container maxWidth="sm">
             <Typography
-              component="h1"
-              variant="h2"
+              variant="subtitle1"
               align="center"
-              color="text.primary"
-              gutterBottom
+              color="text.secondary"
+              component="p"
             >
               <img src="https://cdn.discordapp.com/attachments/966865962617946142/968233453508251708/RyderExpress_BIG.png"></img>
             </Typography>
