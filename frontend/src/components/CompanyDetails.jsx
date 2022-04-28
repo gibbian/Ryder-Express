@@ -7,24 +7,34 @@ function preventDefault(event) {
   event.preventDefault();
 }
 
-export default function CompanyDetails() {
+
+//"id":1,"name":"Temple Runners","email":"templerunners@gmail.com",
+//"phone":"917-769-3243","region":"Northeast","shipping_rates":300,"fleet_size":10,
+//"num_deliveries":55,"is_verified":1
+
+
+export const CompanyDetails = ({ companyDetails }) => {
+
   return (
     <React.Fragment>
-      <Title>Recent Deposits</Title>
+      <Title>Company</Title>
       <Typography component="p" variant="h4">
-        Company Name
+        {companyDetails.name}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Contact Email:
+        Contact Email:{companyDetails.email}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Contact Phone:
+        Contact Phone: {companyDetails.phone}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Shipping Rate: $
+        Region:{companyDetails.region}
       </Typography>
       <Typography color="text.secondary" sx={{ flex: 1 }}>
-        Fleet Size: 
+        Shipping Rate: $ {companyDetails.shipping_rates}
+      </Typography>
+      <Typography color="text.secondary" sx={{ flex: 1 }}>
+        Fleet Size: {companyDetails.fleet_size}
       </Typography>
       <div>
         <Link color="primary" href="#" onClick={preventDefault}>
