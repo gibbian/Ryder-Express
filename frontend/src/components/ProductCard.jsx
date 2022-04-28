@@ -20,9 +20,10 @@ export const ProductCard = ({ card }) => {
 
   const toProfile = (user) => {
     console.log(user.id);
-    sessionStorage.setItem('id', user.id);
-    navigate('/profile');
+    sessionStorage.setItem('companyID', user.id);
+    navigate('/ProductPage');
   };
+    
 
     return (
       <Card sx={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
