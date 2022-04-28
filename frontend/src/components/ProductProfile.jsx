@@ -220,7 +220,7 @@ export const ProductProfile = (props) => {
                             <u>Shipping Rate</u>
                           </Typography>
                           <Typography variant="h6" component="h2">
-                            $5.00 per day
+                            {'$' + props.shipping_rate}
                           </Typography>
                         </Grid>
 
