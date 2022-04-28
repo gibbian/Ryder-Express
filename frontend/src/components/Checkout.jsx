@@ -26,7 +26,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 const theme = createTheme();
 
 export const Checkout = (props) => {
-  const [isShipper, setIsShipper] = useState(false);
   const [region, setRegion] = useState('');
   const apiCall = new apiCalls();
   const navigate = useNavigate();
@@ -56,20 +55,6 @@ export const Checkout = (props) => {
       alert("Please enter a password");
       return false;
     }
-    if (isShipper) {
-      if (region == '') {
-        alert("Please choose a region");
-        return false;
-      }
-      if (parseInt(data.get('shipping-rate')) <= 0 || isNaN(parseInt(data.get('shipping-rate')))) {
-        alert("Please enter a valid shipping rate");
-        return false;
-      }
-      if (parseInt(data.get('fleet-size')) <= 0 || isNaN(parseInt(data.get('fleet-size')))) {
-        alert("Please enter a valid fleet size");
-        return false;
-      }
-    }
     return true;
   }
 
@@ -77,14 +62,8 @@ export const Checkout = (props) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     if (validateFormInfo(data)) {
-      if (isShipper) {
-        apiCall.shipperRegister(data.get('name'), data.get('email'), data.get('phone'), data.get('region'), parseInt(data.get('shipping-rate')), parseInt(data.get('fleet-size')), data.get('username'), data.get('password'));
-        navigate('/SignIn');
-      }
-      else {
         apiCall.buyerRegister(data.get('name'), data.get('email'), data.get('phone'), data.get('username'), data.get('password'));
         navigate('/SignIn');
-      }
     }
   };
 
@@ -103,7 +82,7 @@ export const Checkout = (props) => {
         >
           <img src={longLogo} alt="Ryder Express" width="100%" />
           <Typography component="h1" variant="h5">
-            Sign up
+            Check Out
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -122,7 +101,7 @@ export const Checkout = (props) => {
                 <TextField
                   required
                   fullWidth
-                  id="email"
+                  id="destination"
                   label="Destination"
                   name="email"
                   autoComplete="email"
@@ -133,11 +112,10 @@ export const Checkout = (props) => {
                 <TextField
                   required
                   fullWidth
-                  name="phone"
+                  name="origin-region"
                   label="Origin Region"
-                  type="number"
-                  id="phone-number"
-                  autoComplete="phone number"
+                  id="origin-region"
+                  autoComplete="Origin Region"
                   onInput={(e) => {
                     e.target.value = Math.max(0, parseInt(e.target.value)).toString().slice(0, 10)
                     console.log(e.target.value.length)
@@ -146,11 +124,11 @@ export const Checkout = (props) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  autoComplete="username"
-                  name="username"
+                  autoComplete="Destination Region"
+                  name="destination-region"
                   required
                   fullWidth
-                  id="username"
+                  id="destination-region"
                   label="Destination Region"
                   autoFocus
 
@@ -160,91 +138,32 @@ export const Checkout = (props) => {
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="description"
                   label="Product Description"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  id="product-description"
+                  autoComplete="Product Description"
                 />
                 </Grid>
                 <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name="photo"
                   label="Product Photo (URL)"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  type="url"
+                  id="product-photo"
+                  autoComplete="Product Photo"
                 />
                 </Grid>
-            <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox checked={isShipper} color="primary" onChange={e => setIsShipper(e.target.checked)} />}
-                  label="Are you a Shipper?"
-                />
-              </Grid>
             </Grid>
-            {isShipper && (
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <FormControl fullWidth>
-                    <InputLabel id='region-select-label'>Region</InputLabel>
-                    <Select
-                      required
-                      labelId='region-select-label'
-                      id="region"
-                      value={region}
-                      label="Region"
-                      onChange={handelRegion}
-                    >
-                      <MenuItem value={'Northwest'}>Northwest</MenuItem>
-                      <MenuItem value={'West'}>West</MenuItem>
-                      <MenuItem value={'Southwest'}>Southwest</MenuItem>
-                      <MenuItem value={'Midwest'}>Midwest</MenuItem>
-                      <MenuItem value={'Southeast'}>Southeast</MenuItem>
-                      <MenuItem value={'Mid Atlantic'}>Mid Atlantic</MenuItem>
-                      <MenuItem value={'Northeast'}>Northeast</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="shipping-rate"
-                    label="Shipping Rate (Dollars per day)"
-                    type="number"
-                    id="shipping-rate"
-                    autoComplete="shipping rate"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="fleet-size"
-                    label="Fleet Size"
-                    type="number"
-                    id="fleet-size"
-                    autoComplete="fleet size"
-                  />
-                </Grid>
-              </Grid>
-            )}
-
-
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              Check Out
             </Button>
-            <Link href="/SignIn" variant="body2">
-              Already have an account? Sign in
-            </Link>
           </Box>
         </Box>
       </Container>
