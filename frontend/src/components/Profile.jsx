@@ -89,9 +89,9 @@ function DashboardContent() {
 
     const [companyDetailss, setCompanyDetailss] = useState([])
 
-
+    const userid = sessionStorage.getItem("id");
     useEffect(() => {
-        axios.get(`http://localhost:8000/shipper`).then(
+        axios.get(`http://localhost:8000/shipper/${userid}`).then(
             res => {
                 const values = res.data.data;
                 console.log(values);
@@ -100,6 +100,7 @@ function DashboardContent() {
     }, []);
 
     const [reviews, setReviews] = useState([]);
+    const [details, setDetails] = useState([]);
 
     useEffect(() => {
         axios.get(`http://localhost:8000/shipper_reviews/1`).then(
@@ -110,15 +111,12 @@ function DashboardContent() {
             })
     }, []);
 
-
     const [open, setOpen] = React.useState(true);
 
     const toggleDrawer = () => {
         setOpen(!open);
     };
-
-    const userid = sessionStorage.getItem("id");
-
+  
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -148,7 +146,6 @@ function DashboardContent() {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            {userid}
                             Company Profile
                         </Typography>
                         <IconButton color="inherit">
@@ -196,7 +193,6 @@ function DashboardContent() {
                             <Grid container spacing={4}>
                                 {companyDetailss.map((companyDetails) => 
                                     <Grid item key={userid} xs={12} md={4} lg={0.9}>
-
                                         <CompanyDetails companyDetails={companyDetails}></CompanyDetails>
                                     </Grid>
                                 )}

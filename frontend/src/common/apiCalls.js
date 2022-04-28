@@ -198,4 +198,23 @@ export class apiCalls {
         })
     }
 
+    getSellerByID(id) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/shipper/${id}}`)
+                .then(res => {
+                    console.log('Response: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
 }
