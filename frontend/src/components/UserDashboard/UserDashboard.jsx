@@ -23,7 +23,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { apiCalls } from '../../common/apiCalls';
 import { useEffect, useState } from "react";
-
+import { async } from 'q';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -44,6 +45,7 @@ const rows = [
 
 export const BasicMenu = ({ userName }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -51,6 +53,11 @@ export const BasicMenu = ({ userName }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleLogout = () => {
+    console.log("logout");
+    navigate('/');
+    sessionStorage.clear();
+  }
 
   return (
     <div>
@@ -75,9 +82,8 @@ export const BasicMenu = ({ userName }) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>Home</MenuItem>
+        <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
     </div>
   );
@@ -86,30 +92,49 @@ export const BasicMenu = ({ userName }) => {
 export const UserDashboard = (props) => {
   
   const apiCall = new apiCalls(); 
-
-  const [userName, setUserName] = useState('John Doe');
+  const navigate = useNavigate();
+  
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [deliveries, setDeliveries] = useState([]);
+  const [name, setName] = useState('');
+  const [id, setId] = useState(0);
+
+  async function getUserDetails() {
+    const currentUser =  await apiCall.getCustomerByUsername(sessionStorage.getItem('username'));
+    setName(currentUser.data.data[0].name);
+    setId(currentUser.data.data[0].id);
+  }
+  
+ 
 
   useEffect(() => { 
-    apiCall.getDeliveries(1).then(res => {
+    getUserDetails();
+    apiCall.getDeliveries(id).then(res => {
       const orders = res.data.data
       setDeliveries(orders);
     }); 
-  }, [])
+  }, [id]);
+
+  window.onload = getUserDetails;
+  
 
   const open = Boolean(anchorEl);
 
-  const handleNameClick = (event) => {
+  const handleNameClick = (event) => { 
     setAnchorEl(event.currentTarget);
   };
-  const handleNameClose = () => {
+  const handleNameClose = () => { 
     setAnchorEl(null);
   };
-  const handleTest = () => {
-    apiCall.getReviews(1).then(res => {
-      console.log(res);
-    });    
+  const handleHome = () => {
+    console.log("closing");
+    setAnchorEl(null);
+    navigate('/home');
+  };
+  const handleLogout = () => {
+    console.log("logout");
+    navigate('/');
+    sessionStorage.clear();
   }
 
   function getStatus(prop){
@@ -159,7 +184,7 @@ export const UserDashboard = (props) => {
               onClick={handleNameClick}
             >
               <u>
-                {userName}
+                {name}
               </u>
             </Button>
             <Menu
@@ -171,14 +196,14 @@ export const UserDashboard = (props) => {
                 'aria-labelledby': 'basic-button',
               }}
             >
-              <MenuItem>Home Page</MenuItem>
-              <MenuItem>Logout</MenuItem>
+              <MenuItem onClick={handleHome}>Home Page</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Typography>
         </Box>
       </AppBar>
         <CssBaseline />
-        <Box sx={{ m:2 }}>
+        <Box sx={{ m:5 }}>
         <TableContainer component={Paper} >
           <Table  aria-label="simple table" >
             <TableHead>
@@ -186,7 +211,6 @@ export const UserDashboard = (props) => {
                 <TableCell align="right">Product Name</TableCell>
                 <TableCell align="right">Status</TableCell>
                 <TableCell align="right">Expected Delivery</TableCell>
-                <TableCell align="right">Assigned Contact</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -195,20 +219,14 @@ export const UserDashboard = (props) => {
                   key={order.name}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
-                  <TableCell align="right">{order.product_name}</TableCell>
-                  <TableCell align="right">{getStatus(order)}</TableCell>
-                  <TableCell align="right">{getDeliveryDate(order)}</TableCell>
-                  {/* <TableCell align="right">{row.fat}</TableCell>
-                  <TableCell align="right">{row.carbs}</TableCell>
-                  <TableCell align="right">{row.protein}</TableCell> */}
+                  <TableCell align="right" key="productName">{order.product_name}</TableCell>
+                  <TableCell align="right" key="orderStatus">{getStatus(order)}</TableCell>
+                  <TableCell align="right" key="deliveryDate">{getDeliveryDate(order)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
         </TableContainer>
-        <Button onClick={handleTest}>
-          TEST
-        </Button>
         </Box>
     </ThemeProvider>
   );

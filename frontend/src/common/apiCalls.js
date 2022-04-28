@@ -181,9 +181,28 @@ export class apiCalls {
 
     getCustomerByUsername(username) {
         return new Promise((resolve, reject) => {
-            axios.get(`${apiEndpoint}/customer/${username}}`)
+            axios.get(`${apiEndpoint}/customer/${username}`)
                 .then(res => {
-                    console.log('Response: ');
+                    console.log('Found User: ');
+                    console.log(res);
+                    resolve(res);
+                })
+                .catch(err => {
+                    console.log('Error, cannot fetch reviews: ');
+                    console.log(err);
+                    reject(err);
+                })
+                .finally(() => {
+                    console.log("We're in");
+                })
+        })
+    }
+
+    getEmployee(companyID, employeeID){
+        return new Promise((resolve, reject) => {
+            axios.get(`${apiEndpoint}/employee/${companyID}/${employeeID}`)
+                .then(res => {
+                    console.log('Found Employee: ');
                     console.log(res);
                     resolve(res);
                 })
