@@ -85,7 +85,7 @@ function App () {
           <Routes>
             <Route exact path="/" element={<SignIn setToken={setToken}/>}/>
             <Route exact path="/SignIn" element={<SignIn setToken={setToken}/>}/>
-            <Route exact path="/temp" element={<UserDashboard token={token}/>}/>
+            <Route exact path="/UserDashboard" element={<UserDashboard token={token}/>}/>
             <Route exact path="/ProductPage" element={<ProductPage token={token}/>}/>
             <Route exact path="/Profile" element={<Profile token={token}/>}/>
             <Route exact path="/SignUp" element={<SignUp setToken={setToken}/>}/>
