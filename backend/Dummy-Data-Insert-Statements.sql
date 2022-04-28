@@ -13,24 +13,9 @@ INSERT INTO Customer (id, name, email, phone, username, password)
 VALUES
 (1, 'Timothy Turner', 'ttturner42@gmail.com', '972-943-9506', 'timmyT', 'cosmo');
 
-
-
 UPDATE Shipper SET username = 'ElitesWC', password = 'blueberry' WHERE id =3;
 
-
- DELETE FROM Shipper WHERE username = 'BigShipping';
-
-
-
-DELETE FROM Shipper WHERE id = 17;
-
-
-
 SELECT * FROM Shipper;
-
-DELETE FROM Shipper WHERE id = 11;
-
-SELECT id FROM Shipper WHERE name = 'Dallas Shipping Co';
 
 SELECT * FROM Dates;
 
@@ -53,27 +38,27 @@ VALUES
 (TRUE, FALSE, CURRENT_DATE + 4, 3);
 
 INSERT INTO Delivery (destination, origin_loc, product_name, product_desc, product_picture, delivered_picture, left_warehouse, left_warehouse_date, is_delivered, flagged_for_return, is_return, date_received, buyer_id, seller_id, employee_id)
-VALUES('2721 Black Sage Dr.', 'Northeast', 'Uranium 2', 'This is also used for a nuclear reactor', 'https://imgur.com/cFm57rl', '', false, CURRENT_DATE, false, false, false, CURRENT_DATE + 3, 1, 2, 61);
+VALUES('Ware Commons', 'Northeast', 'Super Metroid Hotlands', 'The 3rd place winner of the Oatsngoats Hacking Contest', 'https://imgur.com/SndVlzu.png', 'https://imgur.com/ZmcBLz4.png', true, CURRENT_DATE - 6, true, false, false, CURRENT_DATE - 1, 1, 12, 86);
 
 SELECT * FROM Delivery;
 
 INSERT INTO Employee (first_name, last_name, company_id, email, phone)
 VALUES
-('Bernard', 'Sanders', 1, 'sandersVT@Senate.gov', '917-224-5141'),
-('Patrick', 'Leahy', 1, 'leahyVT@Senate.gov', '917-734-1745'),
-('Susan', 'Collins', 1, 'collinsME@Senate.gov', '917-158-3576'),
-('Charles', 'Schumer', 1, 'schumerNY@Senate.gov', '917-185-2699'),
-('Elizabeth', 'Warren', 1, 'warrenMA@Senate.gov', '917-925-5571'),
-('Thomas', 'Tuberville', 2, 'tubervilleAL@Senate.gov', '205-985-1856'),
-('Richard', 'Shelby', 2, 'shelbyAL@Senate.gov', '205-298-0923'),
-('William', 'Hagerty', 2, 'hagertyTN@Senate.gov', '205-197-5764'),
-('Roger', 'Wicker', 2, 'wickerMS@Senate.gov', '205-987-1234'),
-('John', 'Kennedy', 2, 'kennedyLA@Senate.gov', '205-186-6846'),
-('William', 'Cassidy', 2, 'cassidyLA@Senate.gov', '205-567-3856'),
-('Richard', 'Scott', 2, 'scottFL@Senate.gov', '205-486-5756'),
-('Patty', 'Murray', 3, 'murrayWA@Senate.gov', '213-547-8576'),
-('Jeffrey', 'Merkley', 3, 'merkleyOR@Senate.gov', '213-567-4635'),
-('Dianne', 'Feinstein', 3, 'feinsteinCA@Senate.gov', '213-375-9485');
+('Bernard', 'Sanders', 5, 'sandersVT@Senate.gov', '917-224-5141'),
+('Patrick', 'Leahy', 5, 'leahyVT@Senate.gov', '917-734-1745'),
+('Susan', 'Collins', 5, 'collinsME@Senate.gov', '917-158-3576'),
+('Charles', 'Schumer', 5, 'schumerNY@Senate.gov', '917-185-2699'),
+('Elizabeth', 'Warren', 9, 'warrenMA@Senate.gov', '917-925-5571'),
+('Thomas', 'Tuberville', 9, 'tubervilleAL@Senate.gov', '205-985-1856'),
+('Richard', 'Shelby', 9, 'shelbyAL@Senate.gov', '205-298-0923'),
+('William', 'Hagerty', 9, 'hagertyTN@Senate.gov', '205-197-5764'),
+('Roger', 'Wicker', 12, 'wickerMS@Senate.gov', '205-987-1234'),
+('John', 'Kennedy', 12, 'kennedyLA@Senate.gov', '205-186-6846'),
+('William', 'Cassidy', 12, 'cassidyLA@Senate.gov', '205-567-3856'),
+('Richard', 'Scott', 12, 'scottFL@Senate.gov', '205-486-5756'),
+('Patty', 'Murray', 13, 'murrayWA@Senate.gov', '213-547-8576'),
+('Jeffrey', 'Merkley', 13, 'merkleyOR@Senate.gov', '213-567-4635'),
+('Dianne', 'Feinstein', 13, 'feinsteinCA@Senate.gov', '213-375-9485');
 
 SELECT * FROM Employee;
 
