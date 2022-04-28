@@ -33,6 +33,12 @@ function Copyright(props) {
   );
 }
 
+export const Profile = () =>{
+  return(
+    <DashboardContent />
+  )
+}
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -188,4 +194,8 @@ function DashboardContent() {
 
 export default function Dashboard() {
   return <DashboardContent />;
+}
+
+export const Home = () =>{
+  return <DashboardContent />
 }
